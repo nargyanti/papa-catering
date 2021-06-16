@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KasirController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +22,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::middleware(['admin'])->group(function () {
+        Route::resource('admin', AdminController::class);
+    });
+
+    Route::middleware(['kasir'])->group(function () {
+        Route::resource('kasir', KasirController::class);
+    });
+
+    Route::get('/logout', function () {
+        Auth::logout();
+        redirect('/');
+    });
+});
