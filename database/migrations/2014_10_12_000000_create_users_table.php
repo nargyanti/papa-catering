@@ -17,12 +17,12 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('nama_lengkap', 100);
             $table->string('username', 30);
-            $table->string('no_telepon', 15);
+            $table->string('no_telepon', 15)->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('level', ['Kasir', 'Admin', 'Supervisor', 'Developer']);
             $table->string('password');
-            $table->rememberToken();
+            $table->rememberToken();            
             $table->timestamps();
         });
     }

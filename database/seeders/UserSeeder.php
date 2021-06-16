@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class UserSeeder extends Seeder
 {
@@ -22,8 +23,8 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
             'level' => 'Admin',
-            'created_at' => \Carbon\Carbon::now(),
-            'email_verified_at' => \Carbon\Carbon::now(),
+            'created_at' => Carbon::now(),
+            'email_verified_at' => Carbon::now(),
         ]);
         DB::table('users')->insert([
             'nama_lengkap' => 'Kasir Papa',
@@ -32,8 +33,18 @@ class UserSeeder extends Seeder
             'email' => 'kasir@gmail.com',
             'password' => Hash::make('12345678'),
             'level' => 'Kasir',
-            'created_at' => \Carbon\Carbon::now(),
-            'email_verified_at' => \Carbon\Carbon::now(),
+            'created_at' => Carbon::now(),
+            'email_verified_at' => Carbon::now(),
+        ]);
+        DB::table('users')->insert([
+            'nama_lengkap' => 'Developer Papa',
+            'username' => 'developer',
+            'no_telepon' => '082257229963',
+            'email' => 'developer@gmail.com',
+            'password' => Hash::make('12345678'),
+            'level' => 'Developer',
+            'created_at' => Carbon::now(),
+            'email_verified_at' => Carbon::now(),
         ]);
     }
 }
