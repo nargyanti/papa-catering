@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +23,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('pages.reports.booking');
+        $level = Auth::user()->level;
+        if ($level == "Admin") {
+            return redirect()->to('admin');
+        } else if ($level == "Kasir") {
+            return redirect()->to('kasir');
+        } else if ($level == "Supervisor") {
+            return redirect()->to("supervisor");
+        } else if ($level == "Developer") {
+            return redirect()->to("developer");
+        } else {
+            return redirect()->to('logout');
+        }
     }
 }

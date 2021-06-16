@@ -19,4 +19,6 @@
 
 @section('content')
     <h1>Booking gass...</h1>
+    <h2>Nama: {{$user->nama_lengkap}}</h2>
+    <h2>Level: {{$user->level}}</h2>
 @endsection
