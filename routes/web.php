@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KasirController;
+use App\Http\Controllers\DeveloperController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['kasir'])->group(function () {
         Route::resource('kasir', KasirController::class);
+    });
+
+    Route::middleware(['developer'])->group(function () {
+        Route::resource('developer', DeveloperController::class);
     });
 
     Route::get('/logout', function () {

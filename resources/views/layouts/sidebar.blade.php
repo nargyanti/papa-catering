@@ -2,6 +2,24 @@
     <li class="nav-item active">
         <a href="/" class="nav-link text-white {{ request()->is('/') ? 'active' : '' }}"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a>
     </li>
+    @if(Auth::user()->level == "Developer")
+    <li class="nav-item">
+        <a href="#" class="nav-link text-white">
+          <i class="nav-icon fas fa-circle"></i>
+          <p>
+            User            
+          </p>
+        </a>        
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('product.index') }}" class="nav-link text-white">
+          <i class="nav-icon fas fa-circle"></i>
+          <p>
+            Produk           
+          </p>
+        </a>        
+    </li>
+    @else
     <li class="nav-item">
         <a href="#" class="nav-link text-white">
           <i class="nav-icon fas fa-circle"></i>
@@ -19,4 +37,5 @@
           </li>
         </ul>
     </li>
+    @endif
 </ul>
