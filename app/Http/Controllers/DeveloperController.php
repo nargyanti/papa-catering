@@ -14,8 +14,8 @@ class DeveloperController extends Controller
      */
     public function index()
     {
-        $developer = User::get();
-        return view('pages.developer.user', compact('developer'));
+        $user = User::get();
+        return view('pages.developer.user', compact('user'));
     }
 
     /**

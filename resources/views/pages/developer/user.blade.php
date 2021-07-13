@@ -7,11 +7,27 @@
 @endsection
 
 @section('content')
+
+{{-- Notification --}}
+<div>
+	@if ($message = Session::get('fail'))
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Failed!!</strong><span> {{ $message }}</span>
+	</div>
+	@elseif ($message = Session::get('success'))
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Success!!</strong><span> {{ $message }}</span>
+	</div>
+	@endif
+</div>
+
 {{-- header --}}
 <div class = "mt-2 mb-4">
 	<h4>User Data</h4>
 	<div class="col-md-3">
-		<button type="button" class="btn btn-primary btn-block"><i class="fa fa-plus"></i> Tambah Pengguna</button>
+		<a type="button" class="btn btn-primary btn-block" href = "{{route('user.create')}}"><i class="fa fa-plus"></i> Tambah Pengguna</a>
 	</div>
 	<hr class = "hr">
 </div>
@@ -52,17 +68,17 @@
 					</thead>
 					<tbody>
 						@php $no = 1 @endphp
-						@foreach($developer as $dev)
+						@foreach($user as $user)
 						<tr>
 							<td>{{$no++}}</td>
-							<td>{{$dev->nama_lengkap}}</td>
-							<td>{{$dev->username}}</td>
-							<td>{{$dev->email}}</td>
-							<td>{{$dev->no_telepon}}</td>
+							<td>{{$user->nama_lengkap}}</td>
+							<td>{{$user->username}}</td>
+							<td>{{$user->email}}</td>
+							<td>{{$user->no_telepon}}</td>
 							{{-- <td>{{$dev->password}}</td> --}}
-							<td>{{$dev->level}}</td>
+							<td>{{$user->level}}</td>
 							<td>
-								<a type="button" class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
+								<a type="button" href = "{{route('user.create')}}"class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
 								<a type="button" class="btn btn-danger"><i class="fa fa-trash"></i></a>
 							</td>
 						</tr>
