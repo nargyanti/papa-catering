@@ -67,7 +67,7 @@
 							{{-- <td>{{$dev->password}}</td> --}}
 							<td>{{$user->level}}</td>
 							<td>
-								<a type="button" href = "{{route('user.create')}}"class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
+								<a type="button" href = "{{route('user.edit', $user->id)}}"class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
 								<a type="button" class="btn btn-danger"><i class="fa fa-trash"></i></a>
 							</td>
 						</tr>

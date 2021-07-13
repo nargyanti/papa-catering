@@ -58,13 +58,33 @@ class UserController extends Controller
    
     public function edit($id)
     {
-        //
+        $user = User::where('id', $id)->first();
+        return view('pages.developer.userEdit', compact('user'));
     }
 
     
     public function update(Request $request, $id)
     {
-        //
+         $request->validate([
+            'nama_lengkap' => 'required',
+            'username' => 'required',
+            'email' => 'required',
+            'no_telepon' => 'required',
+            'level' => 'required',
+            'password' => 'nullable',
+        ]);
+
+        $user = User::where('id', $id)->first();
+        $user->nama_lengkap = $request->get('nama_lengkap');
+        $user->username = $request->get('username');
+        $user->email = $request->get('email');
+        $user->no_telepon = $request->get('no_telepon');
+        $user->level = $request->get('level');
+
+        $user->save();
+
+        return redirect()->route('user.index')
+            ->with('success', 'Employee Successfully Edit');
     }
 
     
