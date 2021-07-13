@@ -39,21 +39,10 @@
 		<div class="card">
 			<div class="card-header">
 				<h2 class="card-title">Table Daftar Pengguna</h2>
-				<div class="card-tools">
-					<div class="input-group input-group-sm" style="width: 300px; height: 40px">
-						<input type="text" name="search" style="height: 40px" class="form-control float-right" placeholder="Search">
-						
-						<div class="input-group-append">
-							<button type="submit" class="btn btn-info">
-								<i class="fas fa-search"></i>
-							</button>
-						</div>
-					</div>
-				</div>
 			</div>
 			<!-- /.card-header -->
-			<div class="card-body table-responsive p-0">
-				<table class="table table-hover" id ="userTable">
+		<div class="card-body">
+			<table id="example1" class="table table-bordered table-striped">
 					<thead>
 						<tr>
 							<th>No</th>
@@ -91,4 +80,6 @@
 		<!-- /.card -->
 	</div>
 </div>
+
+
 @endsection

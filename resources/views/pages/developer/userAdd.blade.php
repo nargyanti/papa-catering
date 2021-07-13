@@ -48,7 +48,7 @@
 							<label for="exampleInputPassword1">Password</label>
 							<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name = "password">
 						</div>
-						{{-- <a href="{{route('user.index')}}" type="button" class = "btn mt-3 btn-outline-primary">Kembali</a> --}}
+						<a href="{{route('user.index')}}" type="button" class = "btn mt-3 btn-outline-primary">Kembali</a>
 						<button class = "btn btn-primary mt-3">Tambah</button>
 					</div>
 			</form>
