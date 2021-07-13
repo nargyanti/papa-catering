@@ -155,5 +155,47 @@
 <script src="{{asset('assets')}}/dist/js/demo.js"></script>
 <!-- Toastr -->
 <script src="{{asset('assets')}}/plugins/toastr/toastr.min.js"></script>
+{{-- Data Table --}}
+<script src="{{asset('assets')}}/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="{{asset('assets')}}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="{{asset('assets')}}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="{{asset('assets')}}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="{{asset('assets')}}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="{{asset('assets')}}/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="{{asset('assets')}}/plugins/jszip/jszip.min.js"></script>
+<script src="{{asset('assets')}}/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="{{asset('assets')}}/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="{{asset('assets')}}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="{{asset('assets')}}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="{{asset('assets')}}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+    "responsive": true, 
+    "lengthChange": true, 
+    "autoWidth": true,
+    "paging": true,
+    "searching": true,
+    "ordering": true,
+    })
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+  $('#deleteUser').on('show.bs.modal', function (event)
+  {
+  var button = $(event.relatedTarget)
+  var iduser = button.data('iduser')
+  var modal = $(this)
+  modal.find('.modal-body #idUser').val(iduser);
+  })
+</script>
 </body>
 </html>

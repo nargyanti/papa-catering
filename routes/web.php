@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -45,4 +46,10 @@ Route::middleware(['auth'])->group(function () {
         Auth::logout();
         redirect('/');
     });
+
+    Route::middleware(['developer'])->group(function () {
+        Route::resource('user', UserController::class);
+    });
+
+    
 });
