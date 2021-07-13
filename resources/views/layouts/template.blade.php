@@ -196,6 +196,14 @@
       "responsive": true,
     });
   });
+
+  $('#deleteUser').on('show.bs.modal', function (event)
+  {
+  var button = $(event.relatedTarget)
+  var iduser = button.data('iduser')
+  var modal = $(this)
+  modal.find('.modal-body #idUser').val(iduser);
+  })
 </script>
 </body>
 </html>

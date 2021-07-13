@@ -68,7 +68,7 @@
 							<td>{{$user->level}}</td>
 							<td>
 								<a type="button" href = "{{route('user.edit', $user->id)}}"class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
-								<a type="button" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+								<button type="button" class="btn btn-danger" data-iduser="{{$user->id}}" data-toggle="modal" data-target="#deleteUser"><i class="fa fa-trash"></i></button>
 							</td>
 						</tr>
 						@endforeach
@@ -78,6 +78,38 @@
 			<!-- /.card-body -->
 		</div>
 		<!-- /.card -->
+	</div>
+</div>
+
+
+
+{{-- Modal --}}
+{{-- Modal Delete --}}
+<div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="myModalLabel">Hapus Kategori</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+						aria-hidden="true">&times;</span></button>
+			</div>
+			<form action="{{route('user.destroy', 'test')}}" method="post">
+				{{method_field('DELETE')}}
+				{{csrf_field()}}
+				<div class="modal-body">
+					<p class="text-center"><i class="far fa-times-circle" style="font-size:100px; color: #e86464"></i></p>
+					<p class="text-center" style="font-size:20px; color: #e86464">
+						Yakin untuk menghapus data ini?
+					</p>
+					<input type="hidden" name="id_user" id="idUser" value="">
+
+				</div>
+				<div class="modal-footer">
+					<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+					<button type="submit" class="btn btn-primary">Ya, Hapus</button>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 
