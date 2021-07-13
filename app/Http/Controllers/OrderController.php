@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
+use App\Models\User;
+use App\Models\Product;
+use Auth;
 
-class KasirController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +17,7 @@ class KasirController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $orders = Order::all();
-        return view('pages.kasir.index', ['user' => $user, 'orders' => $orders]);
+        //
     }
 
     /**
@@ -27,7 +27,7 @@ class KasirController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.kasir.order.create');
     }
 
     /**
@@ -38,7 +38,35 @@ class KasirController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([            
+            'tanggal_pesan' => 'required',
+            'nama_pemesan' => 'required',
+            'telepon' => 'required',
+            'tanggal_kirim' => 'required',
+            'waktu_kirim' => 'required',
+            'alamat' => 'required',
+        ]);
+        
+        $order = new Order;
+        $order->kasir_id = Auth::user()->id;
+        $order->tanggal_pesan = $request->get('tanggal_pesan');
+        $order->nama_pemesan = $request->get('nama_pemesan');        
+        $order->telepon = $request->get('telepon');
+        $order->tanggal_kirim = $request->get('tanggal_kirim');
+        $order->jam_kirim = $request->get('waktu_kirim');        
+        $order->status_pembayaran = 'Belum Lunas';
+        $order->status_pengiriman = 'Belum Dikirim';
+        $order->alamat = $request->get('alamat');
+                               
+        $user = new User;                
+        $user->id = $order->kasir_id;                
+        $order->user()->associate($user);        
+        $order->save();          
+        
+        $products = Product::all();        
+
+        // redirect after add data
+        return view('pages.kasir.orderDetail.create', ['order' => $order, 'products' => $products]);
     }
 
     /**
