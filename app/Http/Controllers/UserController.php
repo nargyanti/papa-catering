@@ -11,13 +11,13 @@ class UserController extends Controller
     public function index()
     {
         $user = User::get();
-        return view('pages.developer.user', compact('user'));
+        return view('pages.developer.user.index', compact('user'));
     }
 
    
     public function create()
     {
-        return view('pages.developer.userAdd');
+        return view('pages.developer.user.userAdd');
     }
 
     
@@ -59,7 +59,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::where('id', $id)->first();
-        return view('pages.developer.userEdit', compact('user'));
+        return view('pages.developer.user.userEdit', compact('user'));
     }
 
     

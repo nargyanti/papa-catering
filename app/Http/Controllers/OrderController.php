@@ -17,7 +17,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $orders = Order::all();
+        return view('pages.kasir.index', ['user' => $user, 'orders' => $orders]);
     }
 
     /**

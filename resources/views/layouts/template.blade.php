@@ -96,7 +96,7 @@
     <!-- Brand Logo -->
     <a href="{{asset('assets')}}/index3.html" class="brand-link text-center">
 
-      <span class="brand-text font-weight-light font-weight-bold text-white">Dashboard</span>
+      <span class="brand-text font-weight-light font-weight-bold text-white">Menu</span>
     </a>
 
     <!-- Sidebar -->

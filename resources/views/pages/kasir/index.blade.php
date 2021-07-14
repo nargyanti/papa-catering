@@ -1,20 +1,22 @@
 @extends('layouts.template')
 
 @section('title')
-    <div class="row justify-content-center align-content-center">
-        <div class="col">
-            <h2>Data Pemesanan Kue</h2>
-        </div>
-        <div class="col justify-content-end">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Cari..." aria-label="cari" aria-describedby="button-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2"> <i class="fas fa-search"></i></button>
-                </div>
-                <a href="{{ route('order.create') }}"><button class="btn btn-primary ml-2" type="button" id="button-addon2">+ Tambah Pesanan</button></a>
-            </div>
-        </div>
-    </div>
+<div class="row justify-content-center align-content-center">
+	<div class="col">
+		<h2>Data Pemesanan Kue</h2>
+	</div>
+	<div class="col justify-content-end">
+		<div class="input-group">
+			<input type="text" class="form-control" placeholder="Cari..." aria-label="cari" aria-describedby="button-addon2">
+			<div class="input-group-append">
+				<button class="btn btn-outline-secondary" type="button" id="button-addon2"> <i
+						class="fas fa-search"></i></button>
+			</div>
+			<a href="{{ route('order.create') }}"><button class="btn btn-primary ml-2" type="button" id="button-addon2">+
+					Tambah Pesanan</button></a>
+		</div>
+	</div>
+</div>
 @endsection
 
 @section('content')
@@ -27,7 +29,7 @@
 				<div class="card-tools">
 					<div class="input-group input-group-sm" style="width: 300px; height: 40px">
 						<input type="text" name="search" style="height: 40px" class="form-control float-right" placeholder="Search">
-						
+
 						<div class="input-group-append">
 							<button type="submit" class="btn btn-info">
 								<i class="fas fa-search"></i>
@@ -38,15 +40,15 @@
 			</div>
 			<!-- /.card-header -->
 			<div class="card-body table-responsive p-0">
-				<table class="table table-hover" id ="productTable">
+				<table class="table table-hover" id="productTable">
 					<thead>
 						<tr>
-                            <th>No</th>
+							<th>No</th>
 							<th>No. Nota</th>
 							<th>Nama Pemesan</th>
 							<th>Tanggal Pesan</th>
 							<th>Tanggal Kirim</th>
-							<th>Jam Kirim</th>														
+							<th>Jam Kirim</th>
 							<th>Status Pembayaran</th>
 							<th>Status Pengiriman</th>
 							<th>Metode Pengiriman</th>
@@ -68,7 +70,8 @@
 							<td>{{$order->metode_pengiriman}}</td>
 							<td>
 								<a type="button" href="#" class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
-								<a type="button" data-toggle="modal" data-target="#deleteProduct" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+								<a type="button" data-toggle="modal" data-target="#deleteProduct" class="btn btn-danger"><i
+										class="fa fa-trash"></i></a>
 
 								{{-- Modal Delete --}}
 								<div class="modal fade" id="deleteProduct" tabindex="-1" role="dialog">
@@ -81,12 +84,13 @@
 											</div>
 											<form action="#" method="post">
 												@csrf
-                                    			@method('DELETE')  
+												@method('DELETE')
 												<div class="modal-body">
-													<p class="text-center"><i class="far fa-times-circle" style="font-size:100px; color: #e86464"></i></p>
+													<p class="text-center"><i class="far fa-times-circle"
+															style="font-size:100px; color: #e86464"></i></p>
 													<p class="text-center" style="font-size:20px; color: #e86464">
 														Yakin untuk menghapus data ini?
-													</p>													
+													</p>
 												</div>
 												<div class="modal-footer">
 													<a type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</a>
@@ -97,7 +101,7 @@
 									</div>
 								</div>
 							</td>
-						</tr>						
+						</tr>
 						@endforeach
 					</tbody>
 				</table>

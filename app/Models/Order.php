@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\OrderDetail;
 use App\Models\User;
+use App\Models\Pemasukan;
 
 class Order extends Model
 {
@@ -34,4 +35,10 @@ class Order extends Model
     public function user() {
         return $this->belongsTo(User::class, 'kasir_id', 'id');
     } 
+
+    
+    public function pemasukan()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
 }

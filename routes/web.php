@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
+use App\Http\Controllers\PemasukanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -39,21 +40,20 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('kasir', KasirController::class);
         Route::resource('order', OrderController::class);
         Route::resource('orderDetail', OrderDetailController::class);        
+        Route::resource('pemasukan', PemasukanController::class); 
+        Route::get('/pemasukan/previewFotoBukti/{params}', [PemasukanController::class, 'previewFoto'])->name('previewFoto'); 
+
     });
 
     Route::middleware(['developer'])->group(function () {
         Route::resource('developer', DeveloperController::class);
         Route::resource('product', ProductController::class);
+        Route::resource('user', UserController::class);
     });
 
     Route::get('/logout', function () {
         Auth::logout();
         redirect('/');
     });
-
-    Route::middleware(['developer'])->group(function () {
-        Route::resource('user', UserController::class);
-    });
-
     
 });
