@@ -45,7 +45,7 @@ class OrderController extends Controller
             'nama_pemesan' => 'required',
             'telepon' => 'required',
             'tanggal_kirim' => 'required',
-            'waktu_kirim' => 'required',
+            'jam_kirim' => 'required',
             'alamat' => 'required',
         ]);
         
@@ -55,7 +55,7 @@ class OrderController extends Controller
         $order->nama_pemesan = $request->get('nama_pemesan');        
         $order->telepon = $request->get('telepon');
         $order->tanggal_kirim = $request->get('tanggal_kirim');
-        $order->waktu_kirim = $request->get('waktu_kirim');        
+        $order->jam_kirim = $request->get('jam_kirim');        
         $order->status_pembayaran = 'Belum Lunas';
         $order->status_pengiriman = 'Belum Dikirim';
         $order->alamat = $request->get('alamat');
@@ -80,8 +80,8 @@ class OrderController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        $orders = Order::all();
-        return view('pages.kasir.order.show', ['user' => $user, 'orders' => $orders]);
+        $order = Order::find($id);
+        return view('pages.kasir.order.show', ['user' => $user, 'order' => $order]);
     }
 
     /**
@@ -92,7 +92,8 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        
+        $order = Order::find($id);
+        return view('pages.kasir.order.edit', ['order' => $order]);
     }
 
     /**
@@ -104,7 +105,31 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([                        
+            'nama_pemesan' => 'required',
+            'telepon' => 'required',
+            'tanggal_kirim' => 'required',
+            'jam_kirim' => 'required',
+            'alamat' => 'required',
+        ]);
+        
+        $order = Order::find($id);                
+        $order->nama_pemesan = $request->get('nama_pemesan');        
+        $order->telepon = $request->get('telepon');
+        $order->tanggal_kirim = $request->get('tanggal_kirim');
+        $order->jam_kirim = $request->get('jam_kirim');                
+        $order->alamat = $request->get('alamat');
+        $order->keterangan = $request->get('keterangan');
+        $order->status_pengiriman = $request->get('status_pengiriman');
+                               
+        $user = new User;                
+        $user->id = $order->kasir_id;                
+        $order->user()->associate($user);        
+        $order->save();             
+
+        // redirect after add data
+        return redirect()->route('kasir.index', $order->id)
+            ->with('success', 'Pemesanan Berhasil Diupdate');
     }
 
     /**
@@ -115,6 +140,14 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+    }
+
+    public function batal($id) {
+        $order = Order::find($id);        
+        $order->status_pengiriman = 'Dibatalkan';
+        $order->save();
+        return redirect()->route('kasir.index')
+            ->with('success', 'Pemesanan Berhasil Dibatalkan');
     }
 }

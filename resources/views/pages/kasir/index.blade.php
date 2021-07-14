@@ -60,17 +60,19 @@
 						@foreach($orders as $order)
 						<tr>
 							<td>{{$no++}}</td>
-							<td>12191</td>
+							<td>{{$order->id}}</td>
 							<td>{{$order->nama_pemesan}}</td>
 							<td>{{$order->tanggal_pesan}}</td>
 							<td>{{$order->tanggal_kirim}}</td>
-							<td>{{$order->waktu_kirim}}</td>
+							<td>{{$order->jam_kirim}}</td>
 							<td>{{$order->status_pembayaran}}</td>
 							<td>{{$order->status_pengiriman}}</td>
 							<td>{{$order->metode_pengiriman}}</td>
 							<td>
-								<a type="button" href="{{ route('order.show', $order->id) }}" class="btn btn-primary">Lihat Detail</a>
+								<a type="button" href="{{ route('order.show', $order->id) }}" class="btn btn-primary">Detail</a>
+								@if($order->status_pengiriman != "Dibatalkan")
 								<a type="button" href="{{ route('order.edit', $order->id) }}" class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
+								@endif
 							</td>
 						</tr>
 						@endforeach

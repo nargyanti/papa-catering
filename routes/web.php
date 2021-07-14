@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\ProductController;
@@ -23,14 +24,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('home');
 });
 
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::middleware(['admin'])->group(function () {
         Route::resource('admin', AdminController::class);
@@ -39,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['kasir'])->group(function () {
         Route::resource('kasir', KasirController::class);
         Route::resource('order', OrderController::class);
+        Route::put('/order/{id}/batal', [OrderController::class, 'batal'])->name('order.batal');        
         Route::resource('orderDetail', OrderDetailController::class);        
         Route::resource('pemasukan', PemasukanController::class); 
         Route::get('/pemasukan/previewFotoBukti/{params}', [PemasukanController::class, 'previewFoto'])->name('previewFoto'); 

@@ -23,8 +23,9 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
             'level' => 'Admin',
-            'created_at' => Carbon::now(),
-            'email_verified_at' => Carbon::now(),
+            'created_at' => Carbon::now('GMT+7'),
+            'email_verified_at' => Carbon::now('GMT+7'),            
+            'updated_at' => Carbon::now('GMT+7'),
         ]);
         DB::table('users')->insert([
             'nama_lengkap' => 'Kasir Papa',
@@ -33,8 +34,8 @@ class UserSeeder extends Seeder
             'email' => 'kasir@gmail.com',
             'password' => Hash::make('12345678'),
             'level' => 'Kasir',
-            'created_at' => Carbon::now(),
-            'email_verified_at' => Carbon::now(),
+            'created_at' => Carbon::now('GMT+7'),
+            'email_verified_at' => Carbon::now('GMT+7'),
         ]);
         DB::table('users')->insert([
             'nama_lengkap' => 'Developer Papa',
@@ -43,8 +44,8 @@ class UserSeeder extends Seeder
             'email' => 'developer@gmail.com',
             'password' => Hash::make('12345678'),
             'level' => 'Developer',
-            'created_at' => Carbon::now(),
-            'email_verified_at' => Carbon::now(),
+            'created_at' => Carbon::now('GMT+7'),
+            'email_verified_at' => Carbon::now('GMT+7'),
         ]);
     }
 }

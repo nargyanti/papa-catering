@@ -64,6 +64,7 @@ class OrderDetailController extends Controller
             $orderDetail->order_id = $request->get('order_id');     
             $orderDetail->product_id = $product->id;                       
             $orderDetail->kuantitas = 1;  
+            $orderDetail->keterangan = '-';  
             $orderDetail->harga_total = $product->harga_satuan * $orderDetail->kuantitas;
             
             $order = new Order;
@@ -75,10 +76,8 @@ class OrderDetailController extends Controller
         // Menambahkan total harga, metode pengiriman, dan pesan customer        
         $order = Order::find($request->get('order_id'));
         $order->metode_pengiriman = $request->get('metode_pengiriman');
-        if($request->get('pesan_customer')) {
-            $order->keterangan = $request->get('pesan_customer');        
-        }
-        $order->total_pesanan = OrderDetail::where('order_id', $order->id)->get()->sum('total_harga');
+        $order->keterangan = $request->get('pesan_customer');                
+        $order->total_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
         $order->save();    
 
         // redirect after add data
@@ -117,7 +116,51 @@ class OrderDetailController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Sementara 1 pesanan
+        $request->validate([                        
+            'kuantitas' => 'required',            
+            'metode_pengiriman' => 'required',                                    
+        ]);
+
+        $product = Product::find($request->get('product_id')); // Ini nyari produk yang dibeli
+        $orderDetail = new orderDetail;
+        $orderDetail->order_id = $request->get('order_id');
+        $orderDetail->product_id = $request->get('product_id');                
+        $orderDetail->kuantitas = $request->get('kuantitas');        
+        $orderDetail->harga_total =  $product->harga_satuan * $orderDetail->kuantitas;
+        $orderDetail->keterangan = $request->get('keterangan');    
+
+        $order = new Order;
+        $order->id = $request->get('order_id');
+        $orderDetail->order()->associate($order);        
+        $orderDetail->save();      
+        
+        // Tambahkan ongkir
+        if($request->get('metode_pengiriman') == 'Diantar') {
+            $product = Product::where('nama', 'Ongkos Kirim')->first(); // Ini nyari ongkir            
+            $orderDetail = new orderDetail;            
+            $orderDetail->order_id = $request->get('order_id');     
+            $orderDetail->product_id = $product->id;                       
+            $orderDetail->kuantitas = 1;  
+            $orderDetail->keterangan = '-';  
+            $orderDetail->harga_total = $product->harga_satuan * $orderDetail->kuantitas;
+            
+            $order = new Order;
+            $order->id = $request->get('order_id');
+            $orderDetail->order()->associate($order);
+            $orderDetail->save();   
+        }
+
+        // Menambahkan total harga, metode pengiriman, dan pesan customer        
+        $order = Order::find($request->get('order_id'));
+        $order->metode_pengiriman = $request->get('metode_pengiriman');
+        $order->keterangan = $request->get('pesan_customer');                
+        $order->total_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
+        $order->save();    
+
+        // redirect after add data
+        return redirect()->route('kasir.index')
+            ->with('success', 'Order Successfully Added');
     }
 
     /**

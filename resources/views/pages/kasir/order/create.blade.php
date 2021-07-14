@@ -27,8 +27,8 @@
         <input type="date" class="form-control" placeholder="dd/mm/yyyy" name="tanggal_kirim">        
     </div>
     <div class="form-group">
-        <label>Waktu Kirim</label>
-        <input type="time" class="form-control" name="waktu_kirim">        
+        <label>Jam Kirim</label>
+        <input type="time" class="form-control" name="jam_kirim">        
     </div>
     <div class="form-group">
         <label>Example textarea</label>
