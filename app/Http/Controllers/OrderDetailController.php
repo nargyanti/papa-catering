@@ -39,19 +39,17 @@ class OrderDetailController extends Controller
     public function store(Request $request)
     {
         // Sementara 1 pesanan
-        $request->validate([            
-            'nama_pesanan' => 'required',
+        $request->validate([                        
             'kuantitas' => 'required',            
             'metode_pengiriman' => 'required',                                    
         ]);
 
-        $order = Order::find($request->get('order_id'));
+        $product = Product::find($request->get('product_id')); // Ini nyari produk yang dibeli
         $orderDetail = new orderDetail;
         $orderDetail->order_id = $request->get('order_id');
-        $orderDetail->nama_pesanan = $request->get('nama_pesanan');        
-        $orderDetail->harga_satuan = $request->get('harga_satuan');            
+        $orderDetail->product_id = $request->get('product_id');                
         $orderDetail->kuantitas = $request->get('kuantitas');        
-        $orderDetail->harga_total = $orderDetail->harga_satuan * $orderDetail->kuantitas;
+        $orderDetail->harga_total =  $product->harga_satuan * $orderDetail->kuantitas;
         $orderDetail->keterangan = $request->get('keterangan');    
 
         $order = new Order;
@@ -61,12 +59,12 @@ class OrderDetailController extends Controller
         
         // Tambahkan ongkir
         if($request->get('metode_pengiriman') == 'Diantar') {
-            $orderDetail = new orderDetail;
-            $orderDetail->nama_pesanan = 'Ongkos Kirim';
+            $product = Product::where('nama', 'Ongkos Kirim')->first(); // Ini nyari ongkir            
+            $orderDetail = new orderDetail;            
             $orderDetail->order_id = $request->get('order_id');     
-            $orderDetail->harga_satuan = $request->get('ongkos_kirim');
+            $orderDetail->product_id = $product->id;                       
             $orderDetail->kuantitas = 1;  
-            $orderDetail->harga_total = $orderDetail->harga_satuan * $orderDetail->kuantitas;
+            $orderDetail->harga_total = $product->harga_satuan * $orderDetail->kuantitas;
             
             $order = new Order;
             $order->id = $request->get('order_id');

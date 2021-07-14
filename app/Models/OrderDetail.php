@@ -13,12 +13,9 @@ class OrderDetail extends Model
 
     protected $table = 'order_details';
 
-    protected $fillable = [        
-        'nama_pesanan',
-        'kuantitas',               
-        'harga_satuan',
-        'keterangan',    
-        'order_id',   
+    protected $fillable = [                
+        'kuantitas',                       
+        'keterangan',        
     ];
 
     public function product() {

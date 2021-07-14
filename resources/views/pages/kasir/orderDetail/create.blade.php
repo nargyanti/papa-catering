@@ -11,14 +11,13 @@
 <button class="btn btn-primary">Tambah Custom</button>
 <form action="{{ route('orderDetail.store') }}" method="POST">
     @csrf
-    <input type="hidden" name="order_id" value="{{ $order->id }}">  
+    <input type="number" name="order_id" value="{{ $order->id }}" hidden>  
     <div class="form-group">
         <label>Produk</label>
-        <select name="nama_pesanan" class="form-control">
-            @foreach ($products as $product)
-                <option value="{{ $product->nama }}">{{ $product->nama }}</option>
-                <input type="hidden" name="harga_satuan" value="{{ $product->harga_satuan }}">        
-            @endforeach
+        <select name="product_id" class="form-control">            
+            @foreach ($products as $product)                                
+                <option value="{{ $product->id }}">{{ $product->nama }}</option>                                
+            @endforeach            
         </select>
     </div>
     <div class="form-group">
@@ -31,11 +30,7 @@
             <option value="Diantar">Diantar</option>
             <option value="Diambil">Diambil</option>            
         </select>        
-    </div>
-    <div class="form-group">
-        <label>Ongkos Kirim</label>
-        <input type="integer" class="form-control" name="ongkos_kirim">
-    </div>
+    </div>    
     <div class="form-group">
         <label>Pesan dari Customer</label>
         <textarea class="form-control" rows="3" name="pesan_customer" placeholder="Masukkan pesan"></textarea>

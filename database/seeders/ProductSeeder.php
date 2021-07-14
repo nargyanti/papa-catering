@@ -745,6 +745,14 @@ class ProductSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            [
+                'nama' => 'Ongkos Kirim',
+                'kategori' => 'Lainnya',
+                'varian' => 'Normal',
+                'harga_satuan' => 5000,                
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ];                        
 
         DB::table('products')->insert($products);

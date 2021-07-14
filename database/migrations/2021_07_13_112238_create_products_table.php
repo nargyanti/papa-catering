@@ -16,7 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->enum('kategori', ['Kue Asin', 'Kue Manis', 'Kotak']);
+            $table->enum('kategori', ['Kue Asin', 'Kue Manis', 'Kotak', 'Lainnya']);
             $table->enum('varian', ['Normal', 'Mini', 'Pendek', 'Tinggi']);
             $table->integer('harga_satuan');
             $table->timestamps();

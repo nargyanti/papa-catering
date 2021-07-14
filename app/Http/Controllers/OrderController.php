@@ -55,7 +55,7 @@ class OrderController extends Controller
         $order->nama_pemesan = $request->get('nama_pemesan');        
         $order->telepon = $request->get('telepon');
         $order->tanggal_kirim = $request->get('tanggal_kirim');
-        $order->jam_kirim = $request->get('waktu_kirim');        
+        $order->waktu_kirim = $request->get('waktu_kirim');        
         $order->status_pembayaran = 'Belum Lunas';
         $order->status_pengiriman = 'Belum Dikirim';
         $order->alamat = $request->get('alamat');
@@ -79,7 +79,9 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = Auth::user();
+        $orders = Order::all();
+        return view('pages.kasir.order.show', ['user' => $user, 'orders' => $orders]);
     }
 
     /**
@@ -90,7 +92,7 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**

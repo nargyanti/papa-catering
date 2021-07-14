@@ -69,37 +69,8 @@
 							<td>{{$order->status_pengiriman}}</td>
 							<td>{{$order->metode_pengiriman}}</td>
 							<td>
-								<a type="button" href="#" class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
-								<a type="button" data-toggle="modal" data-target="#deleteProduct" class="btn btn-danger"><i
-										class="fa fa-trash"></i></a>
-
-								{{-- Modal Delete --}}
-								<div class="modal fade" id="deleteProduct" tabindex="-1" role="dialog">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title">Hapus Produk</h5>
-												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-														aria-hidden="true">&times;</span></button>
-											</div>
-											<form action="#" method="post">
-												@csrf
-												@method('DELETE')
-												<div class="modal-body">
-													<p class="text-center"><i class="far fa-times-circle"
-															style="font-size:100px; color: #e86464"></i></p>
-													<p class="text-center" style="font-size:20px; color: #e86464">
-														Yakin untuk menghapus data ini?
-													</p>
-												</div>
-												<div class="modal-footer">
-													<a type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</a>
-													<button type="submit" class="btn btn-primary">Ya, Hapus</button>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
+								<a type="button" href="{{ route('order.show', $order->id) }}" class="btn btn-primary">Lihat Detail</a>
+								<a type="button" href="{{ route('order.edit', $order->id) }}" class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
 							</td>
 						</tr>
 						@endforeach
