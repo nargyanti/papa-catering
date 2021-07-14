@@ -2,7 +2,7 @@
 
 @section('title')
 <div>
-	<h2>Daftar Pemasukan</h2>
+	<h2>Daftar Pembayaran</h2>
 </div>
 @endsection
 
@@ -25,10 +25,10 @@
 
 {{-- header --}}
 <div class="mt-2 mb-4">
-	<h4>Table Pemasukan</h4>
+	<h4>Table Pembayaran</h4>
 	<div class="col-md-3">
 		<a type="button" class="btn btn-primary btn-block" href="{{route('pemasukan.create')}}"><i class="fa fa-plus"></i> Tambah
-			Pemasukan</a>
+			Pembayaran</a>
 	</div>
 	<hr class="hr">
 </div>
@@ -81,7 +81,7 @@
 								<a type="button" href="{{route('pemasukan.edit', $pemasukan->id)}}" class="btn btn-warning"><i class="fa fa-edit"
 										style="color: white"></i></a>
 								<button type="button" class="btn btn-danger" data-idpemasukan="{{$pemasukan->id}}" data-toggle="modal"
-									data-target="#deleteUser"><i class="fa fa-trash"></i></button>
+									data-target="#deletePemasukan"><i class="fa fa-trash"></i></button>
 							</td>
 						</tr>
 						@endforeach
@@ -102,7 +102,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="myModalLabel">Hapus Kategori</h5>
+				<h5 class="modal-title" id="myModalLabel">Hapus Pemasukan</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 						aria-hidden="true">&times;</span></button>
 			</div>
@@ -114,7 +114,7 @@
 					<p class="text-center" style="font-size:20px; color: #e86464">
 						Yakin untuk menghapus data ini?
 					</p>
-					<input type="hidden" name="id_user" id="idUser" value="">
+					<input type="hidden" name="id_pemasukan" id="idPemasukan" value="">
 
 				</div>
 				<div class="modal-footer">

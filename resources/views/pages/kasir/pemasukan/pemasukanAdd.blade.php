@@ -2,7 +2,7 @@
 
 @section('title')
 <div>
-	<h2>Data Pemasukan Baru</h2>
+	<h2>Data Pembayaran Baru</h2>
 </div>
 @endsection
 
@@ -11,7 +11,7 @@
 
 <div class="card card-primary">
 	<div class="card-header">
-		<h3 class="card-title">Masukkan Data Pemasukan Baru</h3>
+		<h3 class="card-title">Masukkan Data Pembayaran Baru</h3>
 	</div>
 	<!-- /.card-header -->
 
