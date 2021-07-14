@@ -2,7 +2,7 @@
 
 @section('title')
 <div>
-	<h2>Daftar Pemasukan</h2>
+	<h2>Daftar Pembayaran</h2>
 </div>
 @endsection
 
@@ -25,10 +25,10 @@
 
 {{-- header --}}
 <div class="mt-2 mb-4">
-	<h4>Table Pemasukan</h4>
+	<h4>Table Pembayaran</h4>
 	<div class="col-md-3">
 		<a type="button" class="btn btn-primary btn-block" href="{{route('pemasukan.create')}}"><i class="fa fa-plus"></i> Tambah
-			Pemasukan</a>
+			Pembayaran</a>
 	</div>
 	<hr class="hr">
 </div>

@@ -20,7 +20,7 @@
             <li class="nav-item">
                 <a href="{{route('pemasukan.index')}}" class="nav-link text-white">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Pemasukan</p>
+                    <p>Pembayaran</p>
                 </a>
             </li>
         </ul>

@@ -2,7 +2,7 @@
 
 @section('title')
 <div>
-	<h2>Update Data Pemasukan </h2>
+	<h2>Update Data Pembayaran </h2>
 </div>
 @endsection
 
