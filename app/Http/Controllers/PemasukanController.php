@@ -22,10 +22,6 @@ class PemasukanController extends Controller
         return response()->file($url);
     }
 
-
-
-
-
     public function create()
     {
         return view('pages.kasir.pemasukan.pemasukanAdd');
@@ -60,7 +56,7 @@ class PemasukanController extends Controller
         $pemasukan->save();
 
         return redirect()->route('pemasukan.index')
-            ->with('success', 'Pemasukan Berhasil Ditambahkan');
+            ->with('success', 'Pembayaran Berhasil Ditambahkan');
 
     }
 
@@ -109,7 +105,7 @@ class PemasukanController extends Controller
         $pemasukan->save();
 
         return redirect()->route('pemasukan.index')
-            ->with('success', 'Pemasukan Berhasil Diubah');
+            ->with('success', 'Pembayaran Berhasil Diubah');
 
     }
 
@@ -143,8 +139,14 @@ class PemasukanController extends Controller
         );
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $pemasukan = Pemasukan::findOrFail($request->id_pemasukan);
+        if($pemasukan->foto_bukti && file_exists(storage_path('app/public/' . $pemasukan->foto_bukti))) {
+                Storage::delete('public/' . $pemasukan->foto_bukti);
+        }
+        $pemasukan->delete();
+        return redirect()->route('pemasukan.index')
+            ->with('success', 'Data Pembayaran berhasil di hapus');
     }
 }

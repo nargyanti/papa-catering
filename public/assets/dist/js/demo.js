@@ -684,3 +684,20 @@
     $brand_variants.removeClass().addClass('custom-select mb-3 text-light border-0 ').addClass(active_brand_color)
   }
 })(jQuery)
+
+
+
+
+$('#deleteUser').on('show.bs.modal',function(event) {
+  var button=$(event.relatedTarget);
+  var iduser=button.data('iduser');
+  var modal=$(this);
+  modal.find('.modal-body #idUser').val(iduser);
+});
+
+$('#deletePemasukan').on('show.bs.modal',function(event) {
+  var button=$(event.relatedTarget);
+  var idpemasukan=button.data('idpemasukan');
+  var modal=$(this);
+  modal.find('.modal-body #idPemasukan').val(idpemasukan);
+});

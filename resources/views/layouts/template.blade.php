@@ -169,33 +169,16 @@
 <script src="{{asset('assets')}}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="{{asset('assets')}}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script>
-  $(function () {
+  $(function() {
     $("#example1").DataTable({
-    "responsive": true, 
-    "lengthChange": true, 
+    "responsive": true,
+    "lengthChange": true,
     "autoWidth": true,
     "paging": true,
     "searching": true,
     "ordering": true,
-    })
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
     });
   });
-
-  $('#deleteUser').on('show.bs.modal', function (event)
-  {
-  var button = $(event.relatedTarget)
-  var iduser = button.data('iduser')
-  var modal = $(this)
-  modal.find('.modal-body #idUser').val(iduser);
-  })
 </script>
 </body>
 </html>
