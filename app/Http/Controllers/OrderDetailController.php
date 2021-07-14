@@ -131,9 +131,13 @@ class OrderDetailController extends Controller
         $orderDetail->keterangan = $request->get('keterangan');    
 
         $order = new Order;
-        $order->id = $request->get('order_id');
-        $orderDetail->order()->associate($order);        
-        $orderDetail->save();      
+        $order->id = $orderDetail->order_id;
+        $orderDetail->order()->associate($order);                
+        
+        $product = new Product;
+        $product->id = $orderDetail->product_id;
+        $orderDetail->product()->associate($product);        
+        $orderDetail->save(); 
         
         // Tambahkan ongkir
         if($request->get('metode_pengiriman') == 'Diantar') {
@@ -148,7 +152,11 @@ class OrderDetailController extends Controller
             $order = new Order;
             $order->id = $request->get('order_id');
             $orderDetail->order()->associate($order);
-            $orderDetail->save();   
+
+            $product = new Product;
+            $product->id = $orderDetail->product_id;
+            $orderDetail->product()->associate($product);        
+            $orderDetail->save();             
         }
 
         // Menambahkan total harga, metode pengiriman, dan pesan customer        

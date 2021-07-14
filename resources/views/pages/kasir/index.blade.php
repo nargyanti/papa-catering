@@ -40,7 +40,7 @@
 			</div>
 			<!-- /.card-header -->
 			<div class="card-body table-responsive p-0">
-				<table class="table table-hover" id="productTable">
+				<table class="table table-hover text-center" id="productTable">
 					<thead>
 						<tr>
 							<th>No</th>

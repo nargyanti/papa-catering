@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\OrderDetail;
+use App\Models\Pemasukan;
 use Auth;
 
 class OrderController extends Controller
@@ -93,7 +95,9 @@ class OrderController extends Controller
     public function edit($id)
     {
         $order = Order::find($id);
-        return view('pages.kasir.order.edit', ['order' => $order]);
+        $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();        
+        $pemasukan = Pemasukan::with('order')->where('order_id', $id)->get();
+        return view('pages.kasir.order.edit', ['order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan]);
     }
 
     /**

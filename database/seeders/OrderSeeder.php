@@ -141,7 +141,7 @@ class OrderSeeder extends Seeder
                 'updated_at' => Carbon::now('GMT+7'),  
             ],
         ];
-
+                
         DB::table('orders')->insert($orders);
         DB::table('order_details')->insert($order_details);        
     }
