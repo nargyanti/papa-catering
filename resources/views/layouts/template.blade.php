@@ -103,15 +103,7 @@
     <div class="sidebar">
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        @if(Auth::user()->level === 'Kasir')
-        @include('layouts.sidebarKasir')
-        @elseif(Auth::user()->level === 'Admin')
-        @include('layouts.sidebarAdmin')
-        @elseif(Auth::user()->level === 'Developer')
-        @include('layouts.sidebarDeveloper')
-        @else
         @include('layouts.sidebar')
-        @endif
       </nav>
       <!-- /.sidebar-menu -->
     </div>
