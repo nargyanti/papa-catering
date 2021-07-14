@@ -43,8 +43,7 @@
 				<table class="table table-hover text-center" id="productTable">
 					<thead>
 						<tr>
-							<th>No</th>
-							<th>No. Nota</th>
+							<th>Nota</th>
 							<th>Nama Pemesan</th>
 							<th>Tanggal Pesan</th>
 							<th>Tanggal Kirim</th>
@@ -59,7 +58,6 @@
 						@php $no = 1 @endphp
 						@foreach($orders as $order)
 						<tr>
-							<td>{{$no++}}</td>
 							<td>{{$order->id}}</td>
 							<td>{{$order->nama_pemesan}}</td>
 							<td>{{$order->tanggal_pesan}}</td>
@@ -69,7 +67,7 @@
 							<td>{{$order->status_pengiriman}}</td>
 							<td>{{$order->metode_pengiriman}}</td>
 							<td>
-								<a type="button" href="{{ route('order.show', $order->id) }}" class="btn btn-primary">Detail</a>
+								<a type="button" href="{{ route('order.show', $order->id) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
 								@if($order->status_pengiriman != "Dibatalkan")
 								<a type="button" href="{{ route('order.edit', $order->id) }}" class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
 								@endif
