@@ -46,7 +46,9 @@
 				<table id="example1" class="table table-bordered table-striped">
 					<thead>
 						<tr>
+							<th>No</th>
 							<th>No Nota</th>
+							<th>Order Id</th>
 							<th>Tanggal Pembayaran</th>
 							<th>Nominal</th>
 							<th>Metode Transaksi</th>
@@ -55,17 +57,18 @@
 						</tr>
 					</thead>
 					<tbody>
-						{{-- @php $no = 1 @endphp --}}
+						@php $no = 1 @endphp
 						@foreach($pemasukan as $pemasukan)
 						<tr>
-							{{-- <td>{{$no++}}</td> --}}
+							<td>{{$no++}}</td>
+							<td>{{$pemasukan->no_nota}}</td>
 							<td>{{$pemasukan->order_id}}</td>
 							<td>{{$pemasukan->tanggal_bayar}}</td>
 							<td>{{$pemasukan->nominal}}</td>
 							<td>{{$pemasukan->metode_transaksi}}</td>
 							<td>
 								@if($pemasukan->metode_transaksi === 'Cash')
-								<p>cash</p>
+								<p>-</p>
 								@else
 									@if($pemasukan->foto_bukti == null)
 									<p>Foto bukti belum diunggah</p>
@@ -75,7 +78,7 @@
 								@endif
 							</td>
 							<td>
-								<a type="button" href="{{route('user.edit', $pemasukan->id)}}" class="btn btn-warning"><i class="fa fa-edit"
+								<a type="button" href="{{route('pemasukan.edit', $pemasukan->id)}}" class="btn btn-warning"><i class="fa fa-edit"
 										style="color: white"></i></a>
 								<button type="button" class="btn btn-danger" data-idpemasukan="{{$pemasukan->id}}" data-toggle="modal"
 									data-target="#deleteUser"><i class="fa fa-trash"></i></button>

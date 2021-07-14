@@ -20,7 +20,7 @@
 			@csrf
 			<div class="card-body">
 				<div class="form-group">
-					<label for="exampleInputEmail1">No Nota</label>
+					<label for="exampleInputEmail1">Order ID</label>
 					<input type="text" class="form-control" placeholder="Masukkan no nota" name="order_id">
 				</div>
 				<div class="form-group">

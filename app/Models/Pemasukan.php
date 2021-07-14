@@ -16,7 +16,8 @@ class Pemasukan extends Model
         'tanggal_bayar',
         'nominal',
         'metode_transaksi',
-        'foto_bukti'
+        'foto_bukti',
+        'no_nota'
 
     ];
 
