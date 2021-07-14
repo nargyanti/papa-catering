@@ -97,7 +97,7 @@
 				{{method_field('DELETE')}}
 				{{csrf_field()}}
 				<div class="modal-body">
-					<p class="text-center"><i class="far fa-times-circle" style="font-size:100px; color: #e86464"></i></p>
+					<p class="text-center"><i class="fas fa-exclamation-circle" style="font-size:100px; color: #e86464"></i></p>
 					<p class="text-center" style="font-size:20px; color: #e86464">
 						Yakin untuk menghapus data ini?
 					</p>
