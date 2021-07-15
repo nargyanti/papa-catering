@@ -7,7 +7,8 @@
 @endsection
 
 @section('content')
-<a href="{{ route('kasir.index') }}"><button type="button" class="btn btn-primary my-3" style="width:150px">Kembali</button></a>
+<a href="{{ route('kasir.index') }}"><button type="button" class="btn btn-primary my-3" style="width:150px"><i class="fa fa-arrow-left"></i>
+    Kembali</button></a>
 <div>
     @include('layouts.errorAlert')
     <form action="{{ route('order.update', $order->id) }}" method="POST">
@@ -114,8 +115,23 @@
 </div>
 
 <div class="pb-5">
+    <div>
+        <div>
+            @if ($message = Session::get('fail'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Failed!!</strong><span> {{ $message }}</span>
+            </div>
+            @elseif ($message = Session::get('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!!</strong><span> {{ $message }}</span>
+            </div>
+            @endif
+        </div>
+    </div>
     <h2>Data Pembayaran</h2>
-    <a href="{{ route('pemasukan.create') }}"><button type="button" class="btn btn-primary mt-2 mb-3">+ Tambah Pembayaran</button></a>    
+    <a href="{{ route('createWithId', $order->id)}}"><button type="button" class="btn btn-primary mt-2 mb-3">+ Tambah Pembayaran</button></a>    
     <table class="table table-bordered text-center" style="background-color:white">
         <thead>
             <tr class="bg-primary">
@@ -144,7 +160,7 @@
                         @if($pemasukan->foto_bukti == null)
                         <p>Foto bukti belum diunggah</p>
                         @else
-                            <a href = "{{route('previewFoto', $pemasukan->id)}}" class="btn btn-success">Preview</a>
+                            <a href = "{{route('previewFoto', $pemasukan->id)}}" target="_blank"class="btn btn-success">Preview</a>
                         @endif
                     @endif
                 </td>
@@ -158,5 +174,37 @@
             @endforeach
         </tbody>
     </table>
+</div>
+
+
+{{-- Modal --}}
+{{-- Modal Delete Pembayaran --}}
+<div class="modal fade" id="deletePemasukan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Hapus Pemasukan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <form action="{{route('pemasukan.destroy', 'test')}}" method="post">
+                {{method_field('DELETE')}}
+                {{csrf_field()}}
+                <div class="modal-body">
+                    <p class="text-center"><i class="fas fa-exclamation-circle"
+                            style="font-size:100px; color: #e86464"></i></p>
+                    <p class="text-center" style="font-size:20px; color: #e86464">
+                        Yakin untuk menghapus data ini?
+                    </p>
+                    <input type="hidden" name="id_pemasukan" id="idPemasukan" value="">
+
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+                    <button type="submit" class="btn btn-primary">Ya, Hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection

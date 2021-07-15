@@ -21,10 +21,7 @@
 			@method('PUT')
 			<div class="card-body">
 				<input type="hidden" class="form-control" placeholder="Masukkan no nota" name="no_nota" value="{{$pemasukan->no_nota}}">
-				<div class="form-group">
-					<label for="exampleInputEmail1">Order ID</label>
-					<input type="text" class="form-control" placeholder="Masukkan no nota" name="order_id" value="{{$pemasukan->order_id}}">
-				</div>
+				<input type="hidden" class="form-control" placeholder="Masukkan no nota" name="order_id" value="{{$pemasukan->order_id}}">
 				<div class="form-group">
 					<label for="exampleInputEmail1">Tanggal Pembayaran</label>
 					<input type="date" class="form-control" placeholder="Masukkan tanggal pembayaran" name="tanggal_bayar" value="{{$pemasukan->tanggal_bayar}}">

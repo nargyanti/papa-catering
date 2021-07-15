@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pemasukan;
 use App\Models\Order;
+use App\Models\OrderDetail;
+use Storage;
 
 class PemasukanController extends Controller
 {
@@ -13,6 +15,13 @@ class PemasukanController extends Controller
     {
         $pemasukan = Pemasukan::get();
         return view('pages.kasir.pemasukan.index', compact('pemasukan'));
+    }
+
+    public function backToEditOrder($id){
+        $order = Order::find($id);
+        $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();        
+        $pemasukan = Pemasukan::with('order')->where('order_id', $id)->get();
+        return view('pages.kasir.order.edit', ['order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan]);
     }
 
     public function previewFoto($id)
@@ -25,6 +34,13 @@ class PemasukanController extends Controller
     public function create()
     {
         return view('pages.kasir.pemasukan.pemasukanAdd');
+    }
+
+
+    public function createWithId($id){
+        $order = Order::where('id', $id)->first();
+        $order_id = $id;
+         return view('pages.kasir.pemasukan.pemasukanAdd', compact('order_id', 'order'));
     }
 
 
@@ -55,7 +71,7 @@ class PemasukanController extends Controller
         $pemasukan->order()->associate($order);
         $pemasukan->save();
 
-        return redirect()->route('pemasukan.index')
+        return redirect()->route('backToEditOrder',$request->get('order_id') )
             ->with('success', 'Pembayaran Berhasil Ditambahkan');
 
     }
@@ -104,7 +120,7 @@ class PemasukanController extends Controller
         $pemasukan->order()->associate($order);
         $pemasukan->save();
 
-        return redirect()->route('pemasukan.index')
+        return redirect()->route('backToEditOrder', $request->get('order_id'))
             ->with('success', 'Pembayaran Berhasil Diubah');
 
     }
@@ -142,11 +158,12 @@ class PemasukanController extends Controller
     public function destroy(Request $request)
     {
         $pemasukan = Pemasukan::findOrFail($request->id_pemasukan);
+        $order_id = $pemasukan->order_id;
         if($pemasukan->foto_bukti && file_exists(storage_path('app/public/' . $pemasukan->foto_bukti))) {
                 Storage::delete('public/' . $pemasukan->foto_bukti);
         }
         $pemasukan->delete();
-        return redirect()->route('pemasukan.index')
+        return redirect()->route('backToEditOrder', $order_id)
             ->with('success', 'Data Pembayaran berhasil di hapus');
     }
 }

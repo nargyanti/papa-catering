@@ -16,14 +16,14 @@
             </a>
         </li>
         </ul>
-        <ul class="nav nav-treeview">
+        {{-- <ul class="nav nav-treeview">
             <li class="nav-item">
                 <a href="{{route('pemasukan.index')}}" class="nav-link text-white">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Pembayaran</p>
                 </a>
             </li>
-        </ul>
+        </ul> --}}
     </li>
 @elseif(Auth::user()->level === 'Admin')    
     <li class="nav-item">

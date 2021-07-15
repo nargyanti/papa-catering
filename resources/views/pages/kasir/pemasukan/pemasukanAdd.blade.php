@@ -19,10 +19,7 @@
 		<form action="{{route('pemasukan.store')}}" method="POST" enctype="multipart/form-data">
 			@csrf
 			<div class="card-body">
-				<div class="form-group">
-					<label for="exampleInputEmail1">Order ID</label>
-					<input type="text" class="form-control" placeholder="Masukkan no nota" name="order_id">
-				</div>
+				<input type="hidden" class="form-control" placeholder="Masukkan no nota" name="order_id" value={{$order_id}}>
 				<div class="form-group">
 					<label for="exampleInputEmail1">Tanggal Pembayaran</label>
 					<input type="date" class="form-control" placeholder="Masukkan tanggal pembayaran" name="tanggal_bayar">
@@ -42,7 +39,7 @@
 					<label for="exampleInputPassword1">Upload Foto Bukti Pembayaran</label>
 					<input type="file" class="form-control" id="exampleInputPassword1" placeholder="upload foto bukti" name="foto_bukti">
 				</div>
-				<a href="{{route('pemasukan.index')}}" type="button" class="btn mt-3 btn-outline-primary">Kembali</a>
+				<a href="{{ route('order.edit', $order->id) }}" type="button" class="btn mt-3 btn-outline-primary">Kembali</a>
 				<button class="btn btn-primary mt-3">Tambah</button>
 			</div>
 		</form>
