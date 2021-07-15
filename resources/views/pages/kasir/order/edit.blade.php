@@ -159,8 +159,8 @@
                 <td>
                     <a type="button" href="{{route('pemasukan.edit', $pemasukan->id)}}" class="btn btn-warning"><i class="fa fa-edit"
                             style="color: white"></i></a>
-                    <button type="button" class="btn btn-danger" data-idpemasukan="{{$pemasukan->id}}" data-toggle="modal"
-                        data-target="#deletePemasukan"><i class="fa fa-trash"></i></button>
+                    {{-- <button type="button" class="btn btn-danger" data-idpemasukan="{{$pemasukan->id}}" data-toggle="modal"
+                        data-target="#deletePemasukan"><i class="fa fa-trash"></i></button> --}}
                 </td>
             </tr>
             @endforeach

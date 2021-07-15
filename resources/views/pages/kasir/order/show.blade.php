@@ -24,6 +24,7 @@
 			<h5 class = "customer-bio">Metode Pengiriman : {{$order->metode_pengiriman}}</h5>
 			<h5 class = "customer-bio">Tanggal Pengiriman : {{$order->tanggal_kirim}}</h5>
 			<h5 class = "customer-bio">Waktu Pengiriman : {{$order->jam_kirim}}</h5>
+			<h5 class="customer-bio">Keterangan : {{$order->keterangan}}</h5>
 		<div class="row mt-4" style="gap: 20px">
 			@if($order->status_pengiriman === "Belum Dikirim")
 					<div style="background: rgb(241, 155, 155); border-radius: 50px; padding: 5px 10px"><i class = "far fa-clock"></i> Belum Dikirim</div>
