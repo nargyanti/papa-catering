@@ -47,6 +47,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pemasukan/previewFotoBukti/{params}', [PemasukanController::class, 'previewFoto'])->name('previewFoto'); 
         Route::get('/pemasukan/createWithId/{params}', [PemasukanController::class, 'createWithId'])->name('createWithId');
         Route::get('/pemasukan/backToEditOrder/{params}', [PemasukanController::class, 'backToEditOrder'])->name('backToEditOrder');  
+        Route::get('/order/cetakNotaPemesanan/{params}', [OrderController::class, 'cetakNotaPemesanan'])->name('cetakNotaPemesanan');  
+        Route::get('/order/cetakNotaKeseluruhan/{params}', [OrderController::class, 'cetakNotaKeseluruhan'])->name('cetakNotaKeseluruhan');  
 
     });
 
