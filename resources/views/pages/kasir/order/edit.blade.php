@@ -164,10 +164,6 @@
                 </td>
             </tr>
             @endforeach
-            <tr class="font-weight-bold">
-                <td colspan=6>Total</td>
-                <td>{{$nominal}}</td>
-            </tr>
         </tbody>
     </table>
 </div>
@@ -193,11 +189,10 @@
                         Yakin untuk menghapus data ini?
                     </p>
                     <input type="hidden" name="id_pemasukan" id="idPemasukan" value="">
-
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
-                    <button type="submit" class="btn btn-primary">Ya, Hapus</button>
+                    <a type="button" class="btn btn-default" data-dismiss="modal" style="width:100px">Batal</a>
+                    <button type="submit" class="btn btn-primary" style="width:100px">Ya, Hapus</button>
                 </div>
             </form>
         </div>
