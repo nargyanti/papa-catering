@@ -87,7 +87,8 @@ class OrderController extends Controller
         $order = Order::find($id);
         $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();        
         $pemasukan = Pemasukan::with('order')->where('order_id', $id)->get();
-        return view('pages.kasir.order.show', ['user' => $user, 'order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan]);
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');  
+        return view('pages.kasir.order.show', ['user' => $user, 'order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan,  'nominal' => $nominal]);
     }
 
     /**
@@ -101,7 +102,8 @@ class OrderController extends Controller
         $order = Order::find($id);
         $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();        
         $pemasukan = Pemasukan::with('order')->where('order_id', $id)->get();
-        return view('pages.kasir.order.edit', ['order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan]);
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');           
+        return view('pages.kasir.order.edit', ['order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan, 'nominal' => $nominal]);
     }
 
     /**
@@ -166,13 +168,30 @@ class OrderController extends Controller
         $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();  
         $customPaper = array(0,0,400,400);
         $filename = 'orderID' . "-" . $id;
-
-        $nota = PDF::loadview('pages.kasir.order.notaPemesanan', compact('order'))->setPaper($customPaper, 'potrait');
+        $nominal = OrderDetail::where('order_id', $order->id)->sum('harga_total');  
+        $nota = PDF::loadview('pages.kasir.order.notaPemesanan', compact('order', 'orderDetails', 'nominal'))->setPaper($customPaper, 'potrait');
         return $nota->stream($filename);
     }
 
     public function cetakNotaKeseluruhan($id){
+        $order = Order::find($id);
+        $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();  
+        $customPaper = array(0,0,400, 550);
+        $filename = 'orderID' . "-" . $id;
+        $nominal = OrderDetail::where('order_id', $order->id)->sum('harga_total');  
+        $pemasukan = Pemasukan::with('order')->where('order_id', $id)->get();
+        $nominalPemasukan = Pemasukan::where('order_id', $order->id)->sum('nominal'); 
+        if($nominalPemasukan > $nominal){
+            $kembalian = $nominalPemasukan - $nominal;
+            $kurang = 0;
+        }
+        else{
+            $kurang = $nominal - $nominalPemasukan;
+            $kembalian = 0;
+        }
 
+        $nota = PDF::loadview('pages.kasir.order.notaKeseluruhan', compact('order', 'orderDetails', 'nominal', 'nominalPemasukan', 'pemasukan', 'kembalian', 'kurang'))->setPaper($customPaper, 'potrait');
+        return $nota->stream($filename);
     }
 
     

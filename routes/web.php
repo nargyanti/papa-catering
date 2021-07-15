@@ -48,7 +48,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pemasukan/createWithId/{params}', [PemasukanController::class, 'createWithId'])->name('createWithId');
         Route::get('/pemasukan/backToEditOrder/{params}', [PemasukanController::class, 'backToEditOrder'])->name('backToEditOrder');  
         Route::get('/order/cetakNotaPemesanan/{params}', [OrderController::class, 'cetakNotaPemesanan'])->name('cetakNotaPemesanan');  
-        Route::get('/order/cetakNotaKeseluruhan/{params}', [OrderController::class, 'cetakNotaKeseluruhan'])->name('cetakNotaKeseluruhan');  
+        Route::get('/order/cetakNotaKeseluruhan/{params}', [OrderController::class, 'cetakNotaKeseluruhan'])->name('cetakNotaKeseluruhan');
+        Route::get('/order/cetakNotaPembayaran/{params}', [PemasukanController::class, 'cetakNotaPembayaran'])->name('cetakNotaPembayaran'); 
+
 
     });
 
