@@ -23,8 +23,9 @@ class CreateOrdersTable extends Migration
             $table->date('tanggal_kirim');
             $table->time('jam_kirim');
             $table->enum('status_pembayaran', ['Lunas', 'Belum Lunas'])->default('Belum Lunas');
-            $table->enum('status_pengiriman', ['Belum Dikirim', 'Terkirim', 'Dibatalkan'])->default('Belum Dikirim');
+            $table->enum('status_pengiriman', ['Belum Dikirim', 'Terkirim'])->default('Belum Dikirim');
             $table->enum('metode_pengiriman', ['Diantar', 'Diambil'])->nullable();
+            $table->enum('status_pemesanan', ['Dibatalkan', 'Diproses', 'Selesai'])->default('Diproses');
             $table->string('alamat');
             $table->string('keterangan')->nullable()->default('-');
             $table->integer('total_pesanan')->nullable();

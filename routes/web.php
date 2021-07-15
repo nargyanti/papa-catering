@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('kasir', KasirController::class);
         Route::resource('order', OrderController::class);
         Route::put('/order/{id}/batal', [OrderController::class, 'batal'])->name('order.batal');        
+        Route::put('/order/{id}/selesai', [OrderController::class, 'selesai'])->name('order.selesai');        
         Route::resource('orderDetail', OrderDetailController::class);        
         Route::resource('pemasukan', PemasukanController::class); 
         Route::get('/pemasukan/previewFotoBukti/{params}', [PemasukanController::class, 'previewFoto'])->name('previewFoto'); 

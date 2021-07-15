@@ -20,6 +20,7 @@
 @endsection
 
 @section('content')
+@include('layouts.messageAlert')
 {{-- Table --}}
 <div class="row">
 	<div class="col-12">
@@ -44,7 +45,7 @@
 					<thead>
 						<tr>
 							<th>Nota</th>
-							<th>Nama Pemesan</th>
+							<th>Pemesan</th>
 							<th>Tanggal Pesan</th>
 							<th>Tanggal Kirim</th>
 							<th>Jam Kirim</th>
@@ -68,11 +69,38 @@
 							<td>{{$order->metode_pengiriman}}</td>
 							<td>
 								<a type="button" href="{{ route('order.show', $order->id) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
-								@if($order->status_pengiriman != "Dibatalkan")
+								@if($order->status_pemesanan == "Diproses")
 								<a type="button" href="{{ route('order.edit', $order->id) }}" class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
+								<a type="button" href="{{ route('order.show', $order->id) }}" class="btn btn-success" data-toggle="modal" data-target="#selesaiOrder"><i class="fas fa-check"></i></a>
 								@endif
 							</td>
 						</tr>
+						{{-- Modal Selesai Order--}}
+						<div class="modal fade" id="selesaiOrder" tabindex="-1" role="dialog">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Tandai Pemesanan sebagai Selesai</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+												aria-hidden="true">&times;</span></button>
+									</div>            
+									<div class="modal-body">
+										<p class="text-center"><i class="far fa-check-circle" style="font-size:100px; color: #218838"></i></p>
+										<p class="text-center" style="font-size:20px; color: #218838">
+											Yakin untuk menandai pemesanan ini sebagai selesai?
+										</p>													                             
+									</div>
+									<div class="modal-footer">                
+										<a type="button" class="btn btn-outline-primary" data-dismiss="modal">Tidak</a>
+										<form action="{{ route('order.selesai', $order->id) }}" method="POST">
+											@csrf
+											@method('PUT')         
+											<button type="submit" class="btn btn-primary">Ya, Tandai</button>
+										</form>                 
+									</div>            
+								</div>
+							</div>
+						</div>
 						@endforeach
 					</tbody>
 				</table>
