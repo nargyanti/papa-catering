@@ -61,6 +61,7 @@ class OrderController extends Controller
         $order->jam_kirim = $request->get('jam_kirim');        
         $order->status_pembayaran = 'Belum Lunas';
         $order->status_pengiriman = 'Belum Dikirim';
+        $order->status_pemesanan = 'Diproses';
         $order->alamat = $request->get('alamat');
                                
         $user = new User;                
@@ -151,8 +152,8 @@ class OrderController extends Controller
     }
 
     public function batal($id) {
-        $order = Order::find($id);        
-        $order->status_pengiriman = 'Dibatalkan';
+        $order = Order::find($id);                
+        $order->status_pemesanan = "Dibatalkan";
         $order->save();
         return redirect()->route('kasir.index')
             ->with('success', 'Pemesanan Berhasil Dibatalkan');
@@ -175,4 +176,21 @@ class OrderController extends Controller
     }
 
     
+    public function selesai($id) {
+        $order = Order::find($id);
+        if($order->status_pengiriman == "Terkirim" && $order->status_pembayaran == "Lunas") {
+            $order->status_pemesanan = "Selesai";
+            $order->save();
+            return redirect()->route('kasir.index')
+                ->with('success', 'Pemesanan Berhasil Ditandai Sebagai Selesai');
+        } else {
+            if($order->status_pembayaran == "Belum Lunas") {
+                return redirect()->route('kasir.index')
+                    ->with('fail', 'Pembayaran Pemesanan Belum Lunas');  
+            } else if($order->status_pengiriman == "Belum Dikirim") {
+                return redirect()->route('kasir.index')
+                    ->with('fail', 'Pemesanan Belum Terkirim');             
+            }
+        }                 
+    }
 }

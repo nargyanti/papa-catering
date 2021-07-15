@@ -77,12 +77,12 @@ class OrderDetailController extends Controller
         $order = Order::find($request->get('order_id'));
         $order->metode_pengiriman = $request->get('metode_pengiriman');
         $order->keterangan = $request->get('pesan_customer');                
-        $order->total_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
+        $order->total_harga_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
         $order->save();    
 
         // redirect after add data
         return redirect()->route('kasir.index')
-            ->with('success', 'Order Successfully Added');
+            ->with('success', 'Berhasil Menambahkan Pemesanan');
     }
 
     /**
@@ -163,7 +163,7 @@ class OrderDetailController extends Controller
         $order = Order::find($request->get('order_id'));
         $order->metode_pengiriman = $request->get('metode_pengiriman');
         $order->keterangan = $request->get('pesan_customer');                
-        $order->total_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
+        $order->total_harga_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
         $order->save();    
 
         // redirect after add data
