@@ -10,6 +10,7 @@ use App\Models\OrderDetail;
 use App\Models\Pemasukan;
 use PDF;
 use Auth;
+use DB;
 
 class OrderController extends Controller
 {
@@ -69,7 +70,7 @@ class OrderController extends Controller
         $order->user()->associate($user);        
         $order->save();          
         
-        $products = Product::all();        
+        $products = DB::table('products')->orderBy('nama', 'asc')->get();      
 
         // redirect after add data
         return view('pages.kasir.orderDetail.create', ['order' => $order, 'products' => $products]);
