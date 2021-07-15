@@ -7,6 +7,7 @@ use App\Models\Pemasukan;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Storage;
+use PDF;
 
 class PemasukanController extends Controller
 {
@@ -72,6 +73,13 @@ class PemasukanController extends Controller
         $pemasukan->save();
 
         $order = Order::find($pemasukan->order_id);
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');      
+        dd($nominal);
+        if($order->total_harga_pesanan - $nominal == 0) {
+            $order->status_pembayaran = 'Lunas';
+            $order->save();
+        }
+
         $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');                
         if($order->total_harga_pesanan - $nominal <= 0) {
             $order->status_pembayaran = 'Lunas';       
@@ -187,5 +195,15 @@ class PemasukanController extends Controller
 
         return redirect()->route('backToEditOrder', $order_id)
             ->with('success', 'Data Pembayaran berhasil di hapus');
+    }
+
+    public function cetakNotaPembayaran($id){
+      $pemasukan = Pemasukan::where('id', $id)->first(); 
+      $order_id = Pemasukan::where('id', $id)->value('order_id');
+      $order = Order::where('id', $id)->first();
+      $filename = 'PembayaranID' . "-" . $id; 
+      $customPaper = array(0,0,400, 400);
+      $nota = PDF::loadview('pages.kasir.pemasukan.notaPembayaran', compact('pemasukan', 'order'))->setPaper($customPaper, 'potrait');
+      return $nota->stream($filename);
     }
 }
