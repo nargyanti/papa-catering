@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use DB;
 
 class OrderDetailController extends Controller
 {
@@ -26,7 +27,7 @@ class OrderDetailController extends Controller
      */
     public function create()
     {
-        $products = Product::all();        
+        $products = DB::table('products')->orderBy('nama', 'asc')->get();         
         return view('pages.kasir.orderDetail.create', ['products' => $products]);
     }
 
