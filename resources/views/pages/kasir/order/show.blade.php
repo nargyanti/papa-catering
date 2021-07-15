@@ -26,7 +26,7 @@
 			<h5 class = "customer-bio">Waktu Pengiriman : {{$order->jam_kirim}}</h5>
 		<div class="row mt-4" style="gap: 20px">
 			@if($order->status_pengiriman === "Belum Dikirim")
-					<div style="background: rgb(241, 155, 155); border-radius: 50px; padding: 5px 10px"><i class = "fas fa-clock"></i> Belum Dikirim</div>
+					<div style="background: rgb(241, 155, 155); border-radius: 50px; padding: 5px 10px"><i class = "far fa-clock"></i> Belum Dikirim</div>
 			@else
 					<div style="background: rgb(186, 241, 155); border-radius: 50px; padding: 5px 10px"><i class="fas fa-check"></i> Terkirim</div>
 			@endif
@@ -41,7 +41,7 @@
 			@if($order->status_pemesanan === "Dibatalkan")
 			<div style="background: rgb(241, 155, 155); border-radius: 50px; padding: 5px 10px"><i class="far fa-times-circle"></i> Dibatalkan</div>
 			@elseif($order->status_pemesanan === "Diproses")
-			<div style="background: rgb(241, 225, 155); border-radius: 50px; padding: 5px 10px"><i class="fas fa-clock"></i> Diproses</div>
+			<div style="background: rgb(241, 225, 155); border-radius: 50px; padding: 5px 10px"><i class="far fa-clock"></i> Diproses</div>
 			@else
 			<div style="background: rgb(186, 241, 155); border-radius: 50px; padding: 5px 10px"><i class="fas fa-check"></i>
 				Selesai</div>
@@ -125,7 +125,7 @@
 					@endif
 					@endif
 				</td>
-				<td><a href="{{route('cetakNotaPembayaran', $pemasukan->id)}}" class="btn btn-primary">Cetak</a></td>
+				<td><a href="{{route('cetakNotaPembayaran', $pemasukan->id)}}" class="btn btn-primary"><i class="fas fa-print"></i>  Cetak</a></td>
 			</tr>
 			@endforeach
 			<tr class="font-weight-bold">
