@@ -110,8 +110,8 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header bg-white">
-      <div class="container-fluid">
+    <section class="bg-white">
+      <div class="container mt-3 pb-2">
           @yield('title')
       </div><!-- /.container-fluid -->
     </section>
