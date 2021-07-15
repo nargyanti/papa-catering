@@ -164,10 +164,6 @@
                 </td>
             </tr>
             @endforeach
-            <tr class="font-weight-bold">
-                <td colspan=6>Total</td>
-                <td>{{ $nominal}}</td>
-            </tr>
         </tbody>
     </table>
 </div>

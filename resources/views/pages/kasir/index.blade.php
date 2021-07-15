@@ -26,22 +26,10 @@
 	<div class="col-12">
 		<div class="card">
 			<div class="card-header">
-				<h2 class="card-title">Tabel Daftar Pesanan</h2>
-				<div class="card-tools">
-					<div class="input-group input-group-sm" style="width: 300px; height: 40px">
-						<input type="text" name="search" style="height: 40px" class="form-control float-right" placeholder="Search">
-
-						<div class="input-group-append">
-							<button type="submit" class="btn btn-info">
-								<i class="fas fa-search"></i>
-							</button>
-						</div>
-					</div>
-				</div>
+				<h2 class="card-title">Tabel Daftar Pesanan</h2>				
 			</div>
-			<!-- /.card-header -->
-			<div class="card-body table-responsive p-0">
-				<table class="table table-hover text-center" id="productTable">
+			<div class="card-body table-responsive">
+				<table class="table table-hover table-bordered table-striped text-center" id="example1">
 					<thead>
 						<tr>
 							<th>Nota</th>
@@ -49,9 +37,8 @@
 							<th>Tanggal Pesan</th>
 							<th>Tanggal Kirim</th>
 							<th>Jam Kirim</th>
-							<th>Status Pembayaran</th>
-							<th>Status Pengiriman</th>
-							<th>Metode Pengiriman</th>
+							<th>Pembayaran</th>
+							<th>Pengiriman</th>
 							<th>Aksi</th>
 						</tr>
 					</thead>
@@ -68,9 +55,8 @@
 							<td>{{$order->tanggal_pesan}}</td>
 							<td>{{$order->tanggal_kirim}}</td>
 							<td>{{$order->jam_kirim}}</td>
-							<td>{{$order->status_pembayaran}}</td>
-							<td>{{$order->status_pengiriman}}</td>
-							<td>{{$order->metode_pengiriman}}</td>
+							<td>{{$order->status_pembayaran}}</td>							
+							<td>{{$order->status_pengiriman}} ({{$order->metode_pengiriman}})</td>
 							<td>
 								<a type="button" href="{{ route('order.show', $order->id) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
 								@if($order->status_pemesanan == "Diproses")
