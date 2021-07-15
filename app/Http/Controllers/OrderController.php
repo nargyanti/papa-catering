@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\OrderDetail;
 use App\Models\Pemasukan;
+use PDF;
 use Auth;
 
 class OrderController extends Controller
@@ -83,7 +84,9 @@ class OrderController extends Controller
     {
         $user = Auth::user();
         $order = Order::find($id);
-        return view('pages.kasir.order.show', ['user' => $user, 'order' => $order]);
+        $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();        
+        $pemasukan = Pemasukan::with('order')->where('order_id', $id)->get();
+        return view('pages.kasir.order.show', ['user' => $user, 'order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan]);
     }
 
     /**
@@ -154,4 +157,22 @@ class OrderController extends Controller
         return redirect()->route('kasir.index')
             ->with('success', 'Pemesanan Berhasil Dibatalkan');
     }
+
+
+
+    public function cetakNotaPemesanan($id){
+        $order = Order::find($id);
+        $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();  
+        $customPaper = array(0,0,400,400);
+        $filename = 'orderID' . "-" . $id;
+
+        $nota = PDF::loadview('pages.kasir.order.notaPemesanan', compact('order'))->setPaper($customPaper, 'potrait');
+        return $nota->stream($filename);
+    }
+
+    public function cetakNotaKeseluruhan($id){
+
+    }
+
+    
 }
