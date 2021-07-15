@@ -73,11 +73,11 @@
                     </p>													                             
                 </div>
                 <div class="modal-footer">                
-                    <a type="button" class="btn btn-outline-primary" data-dismiss="modal">Tidak</a>
+                    <a type="button" class="btn btn-outline-primary" data-dismiss="modal" style="width:110px">Tidak</a>
                     <form action="{{ route('order.batal', $order->id) }}" method="POST">
                         @csrf
                         @method('PUT')         
-                        <button type="submit" class="btn btn-primary">Ya, Batalkan</button>
+                        <button type="submit" class="btn btn-primary" style="width:110px">Ya, Batalkan</button>
                     </form>                 
                 </div>            
             </div>
@@ -110,11 +110,11 @@
                 <td>{{$orderDetail->keterangan}}</td>                                          
                 <td>{{$orderDetail->product->harga_satuan}}</td>
             </tr>            
-            @endforeach            
+            @endforeach         
             <tr class="font-weight-bold">                
                 <td colspan=4>Total</td>
-                <td>{{ $orderDetail->order->total_harga_pesanan }}</td>
-            </tr>
+                <td>{{ $order->total_harga_pesanan }}</td>
+            </tr>            
         </tbody>
     </table>    
 </div>
