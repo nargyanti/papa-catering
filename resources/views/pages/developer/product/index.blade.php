@@ -66,8 +66,8 @@
 											</p>													
 										</div>
 										<div class="modal-footer">
-											<a type="button" class="btn btn-outline-primary" data-dismiss="modal">Batal</a>
-											<button type="submit" class="btn btn-primary">Ya, Hapus</button>
+											<a type="button" class="btn btn-outline-primary" data-dismiss="modal" style="width:100px">Batal</a>
+											<button type="submit" class="btn btn-primary" style="width:100px">Ya, Hapus</button>
 										</div>
 									</form>
 								</div>
