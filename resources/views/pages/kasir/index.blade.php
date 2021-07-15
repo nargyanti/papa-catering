@@ -1,20 +1,13 @@
 @extends('layouts.template')
 
 @section('title')
-<div class="row justify-content-center align-content-center">
-	<div class="col">
-		<h2>Data Pemesanan Kue</h2>
+<div class="row justify-content-between">
+	<div class="col mt-1">
+		<h2>Daftar Pemesanan</h2>
 	</div>
-	<div class="col justify-content-end">
-		<div class="input-group">
-			<input type="text" class="form-control" placeholder="Cari..." aria-label="cari" aria-describedby="button-addon2">
-			<div class="input-group-append">
-				<button class="btn btn-outline-secondary" type="button" id="button-addon2"> <i
-						class="fas fa-search"></i></button>
-			</div>
-			<a href="{{ route('order.create') }}"><button class="btn btn-primary ml-2" type="button" id="button-addon2">+
-					Tambah Pesanan</button></a>
-		</div>
+	<div class="col-2">
+		<a href="{{ route('order.create') }}"><button class="btn btn-primary ml-2" type="button" id="button-addon2"><i class="fa fa-plus mr-2"></i>
+		Tambah Pesanan</button></a>
 	</div>
 </div>
 @endsection
