@@ -3,13 +3,15 @@
 @section('title')
 <div class="row justify-content-center align-content-center">
 	<div class="col">
-		<h2>Data Pemesanan Kue > Lihat Detail</h2>
+		<h2>Lihat Detail Pemesanan</h2>
 	</div>	
 </div>
 @endsection
 
 @section('content')
-<a href="{{ route('kasir.index') }}"><button class="btn btn-primary">Kembali</button></a>
+<a href="{{ route('kasir.index') }}"><button type="button" class="btn btn-primary my-3" style="width:150px"><i class="fa fa-arrow-left mr-2"></i>
+    Kembali</button></a>
+<div>
 
 {{-- Customer Bio --}}
 <div class="my-4 card" style="padding: 20px">
@@ -131,7 +133,7 @@
 			@endforeach
 			<tr class="font-weight-bold">
 				<td colspan=6>Total</td>
-				<td>{{ $nominal}}</td>
+				<td>{{ $nominal }}</td>
 			</tr>
 		</tbody>
 	</table>

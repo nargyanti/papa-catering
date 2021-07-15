@@ -76,20 +76,17 @@ class PemasukanController extends Controller
         $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');      
         // dd($nominal);
         if($order->total_harga_pesanan - $nominal == 0) {
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');              
+        if($order->total_harga_pesanan - $nominal <= 0) {
             $order->status_pembayaran = 'Lunas';
             $order->save();
         }
 
-        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');                
-        if($order->total_harga_pesanan - $nominal <= 0) {
-            $order->status_pembayaran = 'Lunas';       
-            $order->save();
-        }
-        
         return redirect()->route('backToEditOrder',$request->get('order_id') )
             ->with('success', 'Pembayaran Berhasil Ditambahkan');
 
     }
+}
 
  
     public function show($id)
@@ -138,8 +135,14 @@ class PemasukanController extends Controller
 
         $order = Order::find($pemasukan->order_id);
         $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');                
+        
         if($order->total_harga_pesanan - $nominal <= 0) {
             $order->status_pembayaran = 'Lunas';       
+            $order->save();
+        }
+        
+        if($order->total_harga_pesanan - $nominal > 0) {
+            $order->status_pembayaran = 'Belum Lunas';       
             $order->save();
         }
 

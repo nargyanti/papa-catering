@@ -20,8 +20,7 @@
 <div class="card">
 	<div class="card-header">
 		<h2 class="card-title">Tabel Daftar Produk</h2>		
-	</div>
-	<!-- /.card-header -->
+	</div>	
 	<div class="card-body">
 		<table class="table table-hover table-bordered table-striped text-center" id ="example1">
 			<thead>

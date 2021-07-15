@@ -82,7 +82,7 @@ class OrderSeeder extends Seeder
             ],
             [
                 'order_id' => 1,
-                'product_id' => 12,
+                'product_id' => 11,
                 'kuantitas' => 10,
                 'harga_total' => 27000,
                 'keterangan' => '-',
