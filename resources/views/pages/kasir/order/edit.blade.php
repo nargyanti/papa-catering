@@ -95,8 +95,8 @@
                 <th>No</th>
                 <th>Nama Pesanan</th>
                 <th>Jumlah</th>
-                <th>Harga Satuan</th>
                 <th>Keterangan</th>                                        
+                <th>Harga Satuan</th>
             </tr>
         </thead>
         <tbody>
@@ -106,10 +106,14 @@
                 <td>{{$no++}}</td>
                 <td>{{$orderDetail->product->nama . ' ' . $orderDetail->product->varian}}</td>                    
                 <td>{{$orderDetail->kuantitas}}</td>
-                <td>{{$orderDetail->product->harga_satuan}}</td>
                 <td>{{$orderDetail->keterangan}}</td>                                          
-            </tr>
+                <td>{{$orderDetail->product->harga_satuan}}</td>
+            </tr>            
             @endforeach            
+            <tr class="font-weight-bold">                
+                <td colspan=4>Total</td>
+                <td>{{ $orderDetail->order->total_harga_pesanan }}</td>
+            </tr>
         </tbody>
     </table>    
 </div>

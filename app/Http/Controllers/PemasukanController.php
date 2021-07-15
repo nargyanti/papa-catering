@@ -71,6 +71,14 @@ class PemasukanController extends Controller
         $pemasukan->order()->associate($order);
         $pemasukan->save();
 
+        $order = Order::find($pemasukan->order_id);
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');      
+        dd($nominal)  ;
+        if($order->total_harga_pesanan - $nominal == 0) {
+            $order->status_pembayaran = 'Lunas';
+            $order->save();
+        }
+
         return redirect()->route('backToEditOrder',$request->get('order_id') )
             ->with('success', 'Pembayaran Berhasil Ditambahkan');
 
@@ -117,8 +125,15 @@ class PemasukanController extends Controller
         $order = new Order;
         $order->id = $request->get('order_id');
 
-        $pemasukan->order()->associate($order);
+        $pemasukan->order()->associate($order);        
         $pemasukan->save();
+
+        $order = Order::find($pemasukan->order_id);
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');                
+        if($order->total_harga_pesanan - $nominal <= 0) {
+            $order->status_pembayaran = 'Lunas';       
+            $order->save();
+        }
 
         return redirect()->route('backToEditOrder', $request->get('order_id'))
             ->with('success', 'Pembayaran Berhasil Diubah');
@@ -161,8 +176,16 @@ class PemasukanController extends Controller
         $order_id = $pemasukan->order_id;
         if($pemasukan->foto_bukti && file_exists(storage_path('app/public/' . $pemasukan->foto_bukti))) {
                 Storage::delete('public/' . $pemasukan->foto_bukti);
-        }
+        }        
         $pemasukan->delete();
+        
+        $order = Order::find($pemasukan->order_id);
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');                
+        if($order->total_harga_pesanan - $nominal > 0) {
+            $order->status_pembayaran = 'Belum Lunas';       
+            $order->save();
+        }
+
         return redirect()->route('backToEditOrder', $order_id)
             ->with('success', 'Data Pembayaran berhasil di hapus');
     }

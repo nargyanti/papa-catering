@@ -28,7 +28,7 @@ class CreateOrdersTable extends Migration
             $table->enum('status_pemesanan', ['Dibatalkan', 'Diproses', 'Selesai'])->default('Diproses');
             $table->string('alamat');
             $table->string('keterangan')->nullable()->default('-');
-            $table->integer('total_pesanan')->nullable();
+            $table->integer('total_harga_pesanan')->nullable();
             $table->timestamps();
         });
     }

@@ -164,14 +164,13 @@ class OrderController extends Controller
             return redirect()->route('kasir.index')
                 ->with('success', 'Pemesanan Berhasil Ditandai Sebagai Selesai');
         } else {
-            if($order->status_pengiriman == "Belum Dikirim") {
-                return redirect()->route('kasir.index')
-                    ->with('fail', 'Pemesanan Belum Terkirim');    
-            } else if($order->status_pembayaran == "Belum Lunas") {
+            if($order->status_pembayaran == "Belum Lunas") {
                 return redirect()->route('kasir.index')
                     ->with('fail', 'Pembayaran Pemesanan Belum Lunas');  
+            } else if($order->status_pengiriman == "Belum Dikirim") {
+                return redirect()->route('kasir.index')
+                    ->with('fail', 'Pemesanan Belum Terkirim');             
             }
-            
         }                 
     }
 }

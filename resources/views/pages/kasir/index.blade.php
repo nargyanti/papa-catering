@@ -58,7 +58,11 @@
 					<tbody>
 						@php $no = 1 @endphp
 						@foreach($orders as $order)
+						@if($order->status_pemesanan == "Dibatalkan")
+						<tr style="text-decoration:line-through">
+						@else
 						<tr>
+						@endif						
 							<td>{{$order->id}}</td>
 							<td>{{$order->nama_pemesan}}</td>
 							<td>{{$order->tanggal_pesan}}</td>
