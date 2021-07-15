@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<a href="{{ route('kasir.index') }}"><button type="button" class="btn btn-primary my-3" style="width:150px"><i class="fa fa-arrow-left"></i>
+<a href="{{ route('kasir.index') }}"><button type="button" class="btn btn-primary my-3" style="width:150px"><i class="fa fa-arrow-left mr-2"></i>
     Kembali</button></a>
 <div>
     @include('layouts.errorAlert')
@@ -52,8 +52,8 @@
             </div>    
         </div>
         <div>
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#batalOrder">Batalkan Pesanan</button>
-            <button type="submit" class="btn btn-primary">Simpan</button>        
+            <button type="button" class="btn btn-danger mr-3" data-toggle="modal" data-target="#batalOrder" style="width:150px">Batalkan Pesanan</button>
+            <button type="submit" class="btn btn-primary" style="width:150px">Simpan</button>        
         </div>
     </form>
 
@@ -73,11 +73,11 @@
                     </p>													                             
                 </div>
                 <div class="modal-footer">                
-                    <a type="button" class="btn btn-outline-primary" data-dismiss="modal">Tidak</a>
+                    <a type="button" class="btn btn-outline-primary" data-dismiss="modal" style="width:110px">Tidak</a>
                     <form action="{{ route('order.batal', $order->id) }}" method="POST">
                         @csrf
                         @method('PUT')         
-                        <button type="submit" class="btn btn-primary">Ya, Batalkan</button>
+                        <button type="submit" class="btn btn-primary" style="width:110px">Ya, Batalkan</button>
                     </form>                 
                 </div>            
             </div>
@@ -87,8 +87,9 @@
 
 {{--- Tabel Pesanan ---}}
 <div class="my-5">
+    @include('layouts.messageAlert')
     <h2>Daftar Pesanan</h2>
-    <a href="#"><button type="button" class="btn btn-primary mt-2 mb-3">Edit Pesanan</button></a>
+    <a href="#"><button type="button" class="btn btn-primary mt-2 mb-3" style="width:150px">Edit Pesanan</button></a>
     <table class="table table-bordered text-center" style="background-color:white">
         <thead>
             <tr class="bg-primary">
@@ -109,33 +110,20 @@
                 <td>{{$orderDetail->keterangan}}</td>                                          
                 <td>{{$orderDetail->product->harga_satuan}}</td>
             </tr>            
-            @endforeach            
+            @endforeach         
             <tr class="font-weight-bold">                
                 <td colspan=4>Total</td>
-                <td>{{ $orderDetail->order->total_harga_pesanan }}</td>
-            </tr>
+                <td>{{ $order->total_harga_pesanan }}</td>
+            </tr>            
         </tbody>
     </table>    
 </div>
 
 <div class="pb-5">
-    <div>
-        <div>
-            @if ($message = Session::get('fail'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Failed!!</strong><span> {{ $message }}</span>
-            </div>
-            @elseif ($message = Session::get('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Success!!</strong><span> {{ $message }}</span>
-            </div>
-            @endif
-        </div>
-    </div>
-    <h2>Data Pembayaran</h2>
-    <a href="{{ route('createWithId', $order->id)}}"><button type="button" class="btn btn-primary mt-2 mb-3">+ Tambah Pembayaran</button></a>    
+    @include('layouts.messageAlert')
+    <h2>Data Pembayaran</h2>    
+    <a href="{{ route('createWithId', $order->id) }}"><button type="button" class="btn btn-primary mt-2 mb-3"><i class="fa fa-plus mr-2"></i>
+    Tambah Pembayaran</button></a>
     <table class="table table-bordered text-center" style="background-color:white">
         <thead>
             <tr class="bg-primary">
