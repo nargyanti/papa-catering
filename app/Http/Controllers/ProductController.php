@@ -52,7 +52,7 @@ class ProductController extends Controller
         $product->save();
 
         return redirect()->route('product.index')
-            ->with('success', 'Product Successfully Added');
+            ->with('success', 'Produk Berhasil Ditambahkan');
     }
 
     /**
@@ -103,7 +103,7 @@ class ProductController extends Controller
         $product->save();                
 
         return redirect()->route('product.index')
-            ->with('success', 'Product Successfully Updated');
+            ->with('success', 'Produk Berhasil Diperbarui');
     }
 
     /**
@@ -116,6 +116,6 @@ class ProductController extends Controller
     {
         Product::find($id)->delete();
         return redirect()->route('product.index')
-            ->with('success', 'Product Successfully Deleted');
+            ->with('success', 'Produk Berhasil Dihapus');
     }
 }

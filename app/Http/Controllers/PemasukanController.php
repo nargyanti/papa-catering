@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pemasukan;
 use App\Models\Order;
+use App\Models\OrderDetail;
+use Storage;
+use PDF;
 
 class PemasukanController extends Controller
 {
@@ -13,6 +16,13 @@ class PemasukanController extends Controller
     {
         $pemasukan = Pemasukan::get();
         return view('pages.kasir.pemasukan.index', compact('pemasukan'));
+    }
+
+    public function backToEditOrder($id){
+        $order = Order::find($id);
+        $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();        
+        $pemasukan = Pemasukan::with('order')->where('order_id', $id)->get();
+        return view('pages.kasir.order.edit', ['order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan]);
     }
 
     public function previewFoto($id)
@@ -25,6 +35,13 @@ class PemasukanController extends Controller
     public function create()
     {
         return view('pages.kasir.pemasukan.pemasukanAdd');
+    }
+
+
+    public function createWithId($id){
+        $order = Order::where('id', $id)->first();
+        $order_id = $id;
+        return view('pages.kasir.pemasukan.pemasukanAdd', compact('order_id', 'order'));
     }
 
 
@@ -55,10 +72,21 @@ class PemasukanController extends Controller
         $pemasukan->order()->associate($order);
         $pemasukan->save();
 
-        return redirect()->route('pemasukan.index')
+        $order = Order::find($pemasukan->order_id);
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');      
+        // dd($nominal);
+        if($order->total_harga_pesanan - $nominal == 0) {
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');              
+        if($order->total_harga_pesanan - $nominal <= 0) {
+            $order->status_pembayaran = 'Lunas';
+            $order->save();
+        }
+
+        return redirect()->route('backToEditOrder',$request->get('order_id') )
             ->with('success', 'Pembayaran Berhasil Ditambahkan');
 
     }
+}
 
  
     public function show($id)
@@ -70,6 +98,7 @@ class PemasukanController extends Controller
     public function edit($id)
     {
         $pemasukan = Pemasukan::where('id', $id)->first();
+        // $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');  
         return view('pages.kasir.pemasukan.pemasukanEdit', compact('pemasukan'));
     }
 
@@ -101,10 +130,23 @@ class PemasukanController extends Controller
         $order = new Order;
         $order->id = $request->get('order_id');
 
-        $pemasukan->order()->associate($order);
+        $pemasukan->order()->associate($order);        
         $pemasukan->save();
 
-        return redirect()->route('pemasukan.index')
+        $order = Order::find($pemasukan->order_id);
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');                
+        
+        if($order->total_harga_pesanan - $nominal <= 0) {
+            $order->status_pembayaran = 'Lunas';       
+            $order->save();
+        }
+        
+        if($order->total_harga_pesanan - $nominal > 0) {
+            $order->status_pembayaran = 'Belum Lunas';       
+            $order->save();
+        }
+
+        return redirect()->route('backToEditOrder', $request->get('order_id'))
             ->with('success', 'Pembayaran Berhasil Diubah');
 
     }
@@ -142,11 +184,30 @@ class PemasukanController extends Controller
     public function destroy(Request $request)
     {
         $pemasukan = Pemasukan::findOrFail($request->id_pemasukan);
+        $order_id = $pemasukan->order_id;
         if($pemasukan->foto_bukti && file_exists(storage_path('app/public/' . $pemasukan->foto_bukti))) {
                 Storage::delete('public/' . $pemasukan->foto_bukti);
-        }
+        }        
         $pemasukan->delete();
-        return redirect()->route('pemasukan.index')
+        
+        $order = Order::find($pemasukan->order_id);
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');                
+        if($order->total_harga_pesanan - $nominal > 0) {
+            $order->status_pembayaran = 'Belum Lunas';       
+            $order->save();
+        }
+
+        return redirect()->route('backToEditOrder', $order_id)
             ->with('success', 'Data Pembayaran berhasil di hapus');
+    }
+
+    public function cetakNotaPembayaran($id){
+      $pemasukan = Pemasukan::where('id', $id)->first(); 
+      $order_id = Pemasukan::where('id', $id)->value('order_id');
+      $order = Order::where('id', $id)->first();
+      $filename = 'PembayaranID' . "-" . $id; 
+      $customPaper = array(0,0,400, 400);
+      $nota = PDF::loadview('pages.kasir.pemasukan.notaPembayaran', compact('pemasukan', 'order'))->setPaper($customPaper, 'potrait');
+      return $nota->stream($filename);
     }
 }

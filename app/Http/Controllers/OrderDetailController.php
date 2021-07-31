@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use DB;
 
 class OrderDetailController extends Controller
 {
@@ -26,7 +27,7 @@ class OrderDetailController extends Controller
      */
     public function create()
     {
-        $products = Product::all();        
+        $products = DB::table('products')->orderBy('nama', 'asc')->get();         
         return view('pages.kasir.orderDetail.create', ['products' => $products]);
     }
 
@@ -77,12 +78,12 @@ class OrderDetailController extends Controller
         $order = Order::find($request->get('order_id'));
         $order->metode_pengiriman = $request->get('metode_pengiriman');
         $order->keterangan = $request->get('pesan_customer');                
-        $order->total_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
+        $order->total_harga_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
         $order->save();    
 
         // redirect after add data
         return redirect()->route('kasir.index')
-            ->with('success', 'Order Successfully Added');
+            ->with('success', 'Berhasil Menambahkan Pemesanan');
     }
 
     /**
@@ -163,7 +164,7 @@ class OrderDetailController extends Controller
         $order = Order::find($request->get('order_id'));
         $order->metode_pengiriman = $request->get('metode_pengiriman');
         $order->keterangan = $request->get('pesan_customer');                
-        $order->total_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
+        $order->total_harga_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
         $order->save();    
 
         // redirect after add data

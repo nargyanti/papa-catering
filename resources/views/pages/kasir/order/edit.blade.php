@@ -7,7 +7,8 @@
 @endsection
 
 @section('content')
-<a href="{{ route('kasir.index') }}"><button type="button" class="btn btn-primary my-3" style="width:150px">Kembali</button></a>
+<a href="{{ route('kasir.index') }}"><button type="button" class="btn btn-primary my-3" style="width:150px"><i class="fa fa-arrow-left mr-2"></i>
+    Kembali</button></a>
 <div>
     @include('layouts.errorAlert')
     <form action="{{ route('order.update', $order->id) }}" method="POST">
@@ -51,8 +52,8 @@
             </div>    
         </div>
         <div>
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#batalOrder">Batalkan Pesanan</button>
-            <button type="submit" class="btn btn-primary">Simpan</button>        
+            <button type="button" class="btn btn-danger mr-3" data-toggle="modal" data-target="#batalOrder" style="width:150px">Batalkan Pesanan</button>
+            <button type="submit" class="btn btn-primary" style="width:150px">Simpan</button>        
         </div>
     </form>
 
@@ -72,11 +73,11 @@
                     </p>													                             
                 </div>
                 <div class="modal-footer">                
-                    <a type="button" class="btn btn-outline-primary" data-dismiss="modal">Tidak</a>
+                    <a type="button" class="btn btn-outline-primary" data-dismiss="modal" style="width:110px">Tidak</a>
                     <form action="{{ route('order.batal', $order->id) }}" method="POST">
                         @csrf
                         @method('PUT')         
-                        <button type="submit" class="btn btn-primary">Ya, Batalkan</button>
+                        <button type="submit" class="btn btn-primary" style="width:110px">Ya, Batalkan</button>
                     </form>                 
                 </div>            
             </div>
@@ -86,16 +87,17 @@
 
 {{--- Tabel Pesanan ---}}
 <div class="my-5">
+    @include('layouts.messageAlert')
     <h2>Daftar Pesanan</h2>
-    <a href="#"><button type="button" class="btn btn-primary mt-2 mb-3">Edit Pesanan</button></a>
+    <a href="#"><button type="button" class="btn btn-primary mt-2 mb-3" style="width:150px">Edit Pesanan</button></a>
     <table class="table table-bordered text-center" style="background-color:white">
         <thead>
             <tr class="bg-primary">
                 <th>No</th>
                 <th>Nama Pesanan</th>
                 <th>Jumlah</th>
-                <th>Harga Satuan</th>
                 <th>Keterangan</th>                                        
+                <th>Harga Satuan</th>
             </tr>
         </thead>
         <tbody>
@@ -105,17 +107,23 @@
                 <td>{{$no++}}</td>
                 <td>{{$orderDetail->product->nama . ' ' . $orderDetail->product->varian}}</td>                    
                 <td>{{$orderDetail->kuantitas}}</td>
-                <td>{{$orderDetail->product->harga_satuan}}</td>
                 <td>{{$orderDetail->keterangan}}</td>                                          
-            </tr>
-            @endforeach            
+                <td>{{$orderDetail->product->harga_satuan}}</td>
+            </tr>            
+            @endforeach         
+            <tr class="font-weight-bold">                
+                <td colspan=4>Total</td>
+                <td>{{ $order->total_harga_pesanan }}</td>
+            </tr>            
         </tbody>
     </table>    
 </div>
 
 <div class="pb-5">
-    <h2>Data Pembayaran</h2>
-    <a href="{{ route('pemasukan.create') }}"><button type="button" class="btn btn-primary mt-2 mb-3">+ Tambah Pembayaran</button></a>    
+    @include('layouts.messageAlert')
+    <h2>Data Pembayaran</h2>    
+    <a href="{{ route('createWithId', $order->id) }}"><button type="button" class="btn btn-primary mt-2 mb-3"><i class="fa fa-plus mr-2"></i>
+    Tambah Pembayaran</button></a>
     <table class="table table-bordered text-center" style="background-color:white">
         <thead>
             <tr class="bg-primary">
@@ -144,19 +152,50 @@
                         @if($pemasukan->foto_bukti == null)
                         <p>Foto bukti belum diunggah</p>
                         @else
-                            <a href = "{{route('previewFoto', $pemasukan->id)}}" class="btn btn-success">Preview</a>
+                            <a href = "{{route('previewFoto', $pemasukan->id)}}" target="_blank"class="btn btn-success">Preview</a>
                         @endif
                     @endif
                 </td>
                 <td>
                     <a type="button" href="{{route('pemasukan.edit', $pemasukan->id)}}" class="btn btn-warning"><i class="fa fa-edit"
                             style="color: white"></i></a>
-                    <button type="button" class="btn btn-danger" data-idpemasukan="{{$pemasukan->id}}" data-toggle="modal"
-                        data-target="#deletePemasukan"><i class="fa fa-trash"></i></button>
+                    {{-- <button type="button" class="btn btn-danger" data-idpemasukan="{{$pemasukan->id}}" data-toggle="modal"
+                        data-target="#deletePemasukan"><i class="fa fa-trash"></i></button> --}}
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
+</div>
+
+
+{{-- Modal --}}
+{{-- Modal Delete Pembayaran --}}
+<div class="modal fade" id="deletePemasukan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Hapus Pemasukan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <form action="{{route('pemasukan.destroy', 'test')}}" method="post">
+                {{method_field('DELETE')}}
+                {{csrf_field()}}
+                <div class="modal-body">
+                    <p class="text-center"><i class="fas fa-exclamation-circle"
+                            style="font-size:100px; color: #e86464"></i></p>
+                    <p class="text-center" style="font-size:20px; color: #e86464">
+                        Yakin untuk menghapus data ini?
+                    </p>
+                    <input type="hidden" name="id_pemasukan" id="idPemasukan" value="">
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-default" data-dismiss="modal" style="width:100px">Batal</a>
+                    <button type="submit" class="btn btn-primary" style="width:100px">Ya, Hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection

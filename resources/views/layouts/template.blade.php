@@ -33,7 +33,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Notifications Dropdown Menu -->
-        <li class="nav-item dropdown">
+        {{--<li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
             <i class="far fa-bell"></i>
             <span class="badge badge-warning navbar-badge">15</span>
@@ -58,7 +58,7 @@
             <div class="dropdown-divider"></div>
             <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
             </div>
-        </li>
+        </li>--}}
 
         <li class="nav-item dropdown user user-menu mt-2 ml-2">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-labelledby="dropdownMenuProfile">
@@ -110,8 +110,8 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header bg-white">
-      <div class="container-fluid">
+    <section class="bg-white">
+      <div class="container mt-3 pb-2">
           @yield('title')
       </div><!-- /.container-fluid -->
     </section>

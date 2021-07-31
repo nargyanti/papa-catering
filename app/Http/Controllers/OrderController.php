@@ -8,7 +8,9 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\OrderDetail;
 use App\Models\Pemasukan;
+use PDF;
 use Auth;
+use DB;
 
 class OrderController extends Controller
 {
@@ -60,6 +62,7 @@ class OrderController extends Controller
         $order->jam_kirim = $request->get('jam_kirim');        
         $order->status_pembayaran = 'Belum Lunas';
         $order->status_pengiriman = 'Belum Dikirim';
+        $order->status_pemesanan = 'Diproses';
         $order->alamat = $request->get('alamat');
                                
         $user = new User;                
@@ -67,7 +70,7 @@ class OrderController extends Controller
         $order->user()->associate($user);        
         $order->save();          
         
-        $products = Product::all();        
+        $products = DB::table('products')->orderBy('nama', 'asc')->get();      
 
         // redirect after add data
         return view('pages.kasir.orderDetail.create', ['order' => $order, 'products' => $products]);
@@ -83,7 +86,10 @@ class OrderController extends Controller
     {
         $user = Auth::user();
         $order = Order::find($id);
-        return view('pages.kasir.order.show', ['user' => $user, 'order' => $order]);
+        $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();        
+        $pemasukan = Pemasukan::with('order')->where('order_id', $id)->get();
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');  
+        return view('pages.kasir.order.show', ['user' => $user, 'order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan,  'nominal' => $nominal]);
     }
 
     /**
@@ -97,7 +103,8 @@ class OrderController extends Controller
         $order = Order::find($id);
         $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();        
         $pemasukan = Pemasukan::with('order')->where('order_id', $id)->get();
-        return view('pages.kasir.order.edit', ['order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan]);
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');           
+        return view('pages.kasir.order.edit', ['order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan, 'nominal' => $nominal]);
     }
 
     /**
@@ -148,10 +155,62 @@ class OrderController extends Controller
     }
 
     public function batal($id) {
-        $order = Order::find($id);        
-        $order->status_pengiriman = 'Dibatalkan';
+        $order = Order::find($id);                
+        $order->status_pemesanan = "Dibatalkan";
         $order->save();
         return redirect()->route('kasir.index')
             ->with('success', 'Pemesanan Berhasil Dibatalkan');
+    }
+
+
+
+    public function cetakNotaPemesanan($id){
+        $order = Order::find($id);
+        $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();  
+        $customPaper = array(0,0,400,400);
+        $filename = 'orderID' . "-" . $id;
+        $nominal = OrderDetail::where('order_id', $order->id)->sum('harga_total');  
+        $nota = PDF::loadview('pages.kasir.order.notaPemesanan', compact('order', 'orderDetails', 'nominal'))->setPaper($customPaper, 'potrait');
+        return $nota->stream($filename);
+    }
+
+    public function cetakNotaKeseluruhan($id){
+        $order = Order::find($id);
+        $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();  
+        $customPaper = array(0,0,400, 550);
+        $filename = 'orderID' . "-" . $id;
+        $nominal = OrderDetail::where('order_id', $order->id)->sum('harga_total');  
+        $pemasukan = Pemasukan::with('order')->where('order_id', $id)->get();
+        $nominalPemasukan = Pemasukan::where('order_id', $order->id)->sum('nominal'); 
+        if($nominalPemasukan > $nominal){
+            $kembalian = $nominalPemasukan - $nominal;
+            $kurang = 0;
+        }
+        else{
+            $kurang = $nominal - $nominalPemasukan;
+            $kembalian = 0;
+        }
+
+        $nota = PDF::loadview('pages.kasir.order.notaKeseluruhan', compact('order', 'orderDetails', 'nominal', 'nominalPemasukan', 'pemasukan', 'kembalian', 'kurang'))->setPaper($customPaper, 'potrait');
+        return $nota->stream($filename);
+    }
+
+    
+    public function selesai($id) {
+        $order = Order::find($id);
+        if($order->status_pengiriman == "Terkirim" && $order->status_pembayaran == "Lunas") {
+            $order->status_pemesanan = "Selesai";
+            $order->save();
+            return redirect()->route('kasir.index')
+                ->with('success', 'Pemesanan Berhasil Ditandai Sebagai Selesai');
+        } else {
+            if($order->status_pembayaran == "Belum Lunas") {
+                return redirect()->route('kasir.index')
+                    ->with('fail', 'Pembayaran Pemesanan Belum Lunas');  
+            } else if($order->status_pengiriman == "Belum Dikirim") {
+                return redirect()->route('kasir.index')
+                    ->with('fail', 'Pemesanan Belum Terkirim');             
+            }
+        }                 
     }
 }
