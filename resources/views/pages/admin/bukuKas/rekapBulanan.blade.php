@@ -20,7 +20,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Bulan Juli 2021</h2>
+                    <h2 class="card-title">Bulan @php echo($date); @endphp</h2>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -34,36 +34,33 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php $saldo = 0; @endphp
+                            @foreach ($pemasukan as $pemasukan)
                                 <tr>
-                                    <td><a href="{{ route('bukukas.rekapHarian')}}">1</a></td>
-                                    <td>225000</td>
-                                    <td>25000</td>
-                                    <td>300000</td>
+                                    <td><a href='{{url("/bukukas/{$pemasukan->tahun_bayar}/{$pemasukan->bulan_bayar}/{$pemasukan->hari_bayar}")}}'>{{ $pemasukan->tanggal_bayar }}</a></td>
+                                    <td>{{ $pemasukan->nominal }}</td>
+                                    <td>-</td>
+                                    <td>
+                                        @php 
+                                            $saldo = $saldo + $pemasukan->nominal;
+                                            echo $saldo;
+                                        @endphp
+                                    </td>
                                 </tr>
+                            @endforeach
+                            @foreach ($pengeluaran as $pengeluaran)
                                 <tr>
-                                    <td><a href="#">2</a></td>
-                                    <td>125000</td>
-                                    <td>50000</td>
-                                    <td>375000</td>
+                                    <td><a href='{{url("/bukukas/{$pengeluaran->tahun_keluar}/{$pengeluaran->bulan_keluar}/{$pengeluaran->hari_keluar}")}}'>{{ $pengeluaran->tanggal_pengeluaran }}</a></td>
+                                    <td>-</td>
+                                    <td>{{ $pengeluaran->nominal }}</td>
+                                    <td>
+                                        @php 
+                                            $saldo = $saldo - $pengeluaran->nominal;
+                                            echo $saldo;
+                                        @endphp
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td><a href="#">3</a></td>
-                                    <td>250000</td>
-                                    <td>200000</td>
-                                    <td>425000</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#">4</a></td>
-                                    <td>300000</td>
-                                    <td>100000</td>
-                                    <td>625000</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#">5</a></td>
-                                    <td>300000</td>
-                                    <td>100000</td>
-                                    <td>625000</td>
-                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

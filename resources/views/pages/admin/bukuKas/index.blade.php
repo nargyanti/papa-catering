@@ -35,42 +35,36 @@
                         </thead>
                         <tbody>
                             @php
-                                $no = 1;
+                                $no = 0;
+                                $saldo = 0;
                             @endphp
+                            @foreach ($pemasukan as $pemasukan)
+                                <tr>
+                                    <td><a href="{{ route('bukukas.rekapTahunan', $pemasukan->tahun_bayar)}}">{{ $pemasukan->tahun_bayar }}</a></td>
+                                    <td>{{ $pemasukan->nominal }}</td>
+                                    <td>-</td>
+                                    <td>
+                                        @php 
+                                            $saldo = $saldo + $pemasukan->nominal;
+                                            echo $saldo;
+                                        @endphp
+                                    </td>
+                                </tr>
+                            @endforeach
                             @foreach ($pengeluaran as $pengeluaran)
                                 <tr>
-                                    <td>{{ $no++ }}</td>
-                                    <td>{{ $pengeluaran->nama_lengkap }}</td>
-                                    <td>{{ $pengeluaran->tanggal_pengeluaran }}</td>
-                                    <td>{{ $pengeluaran->jenis_beban }}</td>
-                                    <td>{{ $pengeluaran->jenis_pengeluaran }}</td>
-                                    <td>{{ $pengeluaran->metode_transaksi }}</td>
+                                    <td><a href="{{ route('bukukas.rekapTahunan', $pengeluaran->tahun_keluar )}}">{{ $pengeluaran->tahun_keluar }}</a></td>
+                                    <td>-</td>
+                                    <td>{{ $pengeluaran->nominal }}</td>
                                     <td>
+                                        @php 
+                                            $saldo = $saldo - $pengeluaran->nominal;
+                                            echo $saldo;
+                                        @endphp
+                                    </td>
+                                </tr>
                             @endforeach
-                            <!-- <tr>
-                                <td><a href="{{ route('bukukas.rekapTahunan', 2021)}}">2021</a></td>
-                                <td>225000</td>
-                                <td>25000</td>
-                                <td>300000</td>
-                            </tr>
-                            <tr>
-                                <td><a href="#">2020</a></td>
-                                <td>125000</td>
-                                <td>50000</td>
-                                <td>375000</td>
-                            </tr>
-                            <tr>
-                                <td><a href="#">2019</a></td>
-                                <td>250000</td>
-                                <td>200000</td>
-                                <td>425000</td>
-                            </tr>
-                            <tr>
-                                <td><a href="#">2018</a></td>
-                                <td>300000</td>
-                                <td>100000</td>
-                                <td>625000</td>
-                            </tr> -->
+                            
                         </tbody>
                     </table>
                 </div>

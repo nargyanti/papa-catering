@@ -20,7 +20,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Tanggal = 1 Juli 2021</h2>
+                    <h2 class="card-title">Tanggal @php echo($date); @endphp </h2>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -44,7 +44,7 @@
                                     <td> - </td>
                                     <td>
                                         @php 
-                                            $saldo = $saldo + $pengeluaran->nominal;
+                                            $saldo = $saldo + $pemasukan->nominal;
                                             echo $saldo;
                                         @endphp
                                     </td>
@@ -57,7 +57,7 @@
                                     <td>{{ $pengeluaran->nominal }}</td>
                                     <td>
                                         @php 
-                                            $saldo = $saldo + $pengeluaran->nominal;
+                                            $saldo = $saldo - $pengeluaran->nominal;
                                             echo $saldo;
                                         @endphp
                                     </td>
