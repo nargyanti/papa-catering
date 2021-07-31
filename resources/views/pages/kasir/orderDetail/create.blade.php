@@ -41,15 +41,28 @@
                         <div class="col-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5><b>{{ $product->nama }}</b></h5>
-                                    <p>Normal: {{ $product->harga_satuan }}<br>
-                                    @continue
-                        @elseif($product->kategori == "Kue Asin" && $product->varian == "Mini")                        
-                                        Mini: {{ $product->harga_satuan }}</p>                                    
-                                    <div class="text-center">
-                                        <button class="btn btn-outline-primary mx-1" style="width:90px;border-radius:10px">Normal</button>
-                                        <button class="btn btn-outline-primary mx-1" style="width:90px;border-radius:10px">Mini</button>
+                                    <h5 class = "mb-3"><b>{{ $product->nama }}</b></h5>
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <h5>Normal: {{ $product->harga_satuan }}</h5><br>
+                                        </div>
+                                        <div class="col-5">
+                                            <button class="btn btn-outline-primary mx-1" style="width:90px;border-radius:10px"
+                                            onClick="AddToCart('{{$product->id}}', '{{$product->nama}}', 'normal', '{{$product->harga_satuan}}' )">Normal</button>
+                                        </div>
                                     </div>
+                                    @continue
+                        @elseif($product->kategori == "Kue Asin" && $product->varian == "Mini") 
+                                
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <h5>Mini: {{ $product->harga_satuan }}</h5>                                    
+                                        </div>
+                                        <div class="col-5">
+                                            <button class="btn btn-outline-primary mx-1" style="width:90px;border-radius:10px" 
+                                            onClick= "AddToCart('{{$product->id}}', '{{$product->nama}}', 'mini', '{{$product->harga_satuan}}')">Mini</button>
+                                        </div>
+                                    </div>                       
                                 </div>
                             </div>
                         </div>
@@ -72,18 +85,18 @@
             <div class="card-body">
                 <div>
                     <h5 class="font-weight-bold">Kue Asin</h5>
-                    <table class="my-3">
+                    <table class="my-3" id= "cobaTabel">
                         <tr>
                             <td class="pr-2">Lemper Normal</td>
                             <td class="px-2"><input type="number" name="kuantitas" value="10" style="width:60px" class="form-control text-center"></td>
                             <td class="px-2">Rp 25000</td>
-                            <td class="pl-2"><a type="button" data-toggle="modal" data-target="#deleteProduct" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
+                            <td class="pl-2"><a class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
                         </tr>
                         <tr>
                             <td class="pr-2">Kroket Normal</td>
                             <td class="px-2"><input type="number" name="kuantitas" value="10" style="width:60px" class="form-control text-center"></td>
                             <td class="px-2">Rp 27000</td>
-                            <td class="pl-2"><a type="button" data-toggle="modal" data-target="#deleteProduct" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
+                            <td class="pl-2"><a class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
                         </tr>
                     </table>
                 </div>
@@ -132,8 +145,13 @@
         </div>
 
         <div class="text-center">
-            <button class="btn btn-outline-primary mr-3" style="width:45%">Batalkan</button>
-            <button class="btn btn-primary" style="width:45%">Simpan</button>
+            <form action="{{route('storeFromCart')}}" method="POST" class = "hidden" >
+                @csrf
+                <input type="hidden" id = "sendId" name="id">
+                <button class="btn btn-primary" style="width:45%">Simpan</button>
+            </form>
+            {{-- <button class="btn btn-outline-primary mr-3" style="width:45%">Batalkan</button>
+            <button class="btn btn-primary" style="width:45%">Simpan</button> --}}
         </div>
     </div>
 </div>
@@ -172,4 +190,65 @@
     <button type="submit" class="btn btn-primary">Simpan Pesanan</button>
 </form>
 --}}
+
+<script>
+    var items = []
+    function AddToCart(id, nama, size, price){
+        // alert(id)
+        let parent = document.getElementById('cobaTabel');
+        let tr = document.createElement("tr");
+        let td1 = document.createElement("td");
+        let td2 = document.createElement("td");
+        let td3 = document.createElement("td");
+        let td4 = document.createElement("td");
+        let input = document.createElement("input");
+        let a = document.createElement("a");
+        let i = document.createElement("i");
+
+        // Styling
+        td1.className = "pr-2"
+        td2.className = "px-2"
+        td3.className = "px-2"
+        td4.className = "pl-2"
+        input.className = "form-control text-center";
+        input.setAttribute('id', 'inputQty');
+        input.setAttribute('type', 'number');
+        input.style.width = "60px"
+        input.setAttribute('onchange', 'updateQty()')
+        a.className = "btn btn-danger"
+        i.className = "fa fa-trash"
+        a.setAttribute('onclick', 'deleteFromCart()')
+
+        td1.innerHTML = nama + " " +size;
+        input.value = 1;
+        td2.appendChild(input);
+        td3.innerHTML = "Rp" + price;
+        td4.appendChild(a)
+        a.appendChild(i)
+
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        tr.appendChild(td4);
+        parent.appendChild(tr);
+
+        // Add to hidden form
+        let sendId = document.getElementById('sendId')
+        items.push(id);
+        console.log(items);
+        sendId.value = items;
+        console.log(sendId.value);
+    }
+
+    function deleteFromCart(){
+        alert("Ok");
+    }
+
+    function updateQty(){
+        alert("Ok");
+
+    }
+
+    
+</script>
 @endsection
