@@ -36,9 +36,21 @@
         </a>
         <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="/home" class="nav-link text-white">
+            <a href="{{ route('bukukas.rekap') }}" class="nav-link text-white">
             <i class="far fa-circle nav-icon"></i>
-            <p>Pemesanan</p>
+            <p>Buku Kas</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('pembayaran.index') }}" class="nav-link text-white">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Pemasukan</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('pengeluaran.index') }}" class="nav-link text-white">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Pengeluaran</p>
             </a>
         </li>
         </ul>

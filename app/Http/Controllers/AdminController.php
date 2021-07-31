@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\Pengeluaran;
+use App\Models\Pemasukan;
 
 class AdminController extends Controller
 {
@@ -15,7 +18,13 @@ class AdminController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('pages.admin.testAdmin', compact('user'));
+        $pemasukan = Pemasukan::get();
+        $pengeluaran = Pengeluaran::get();
+        $result = Pemasukan::selectRaw('year(tanggal_bayar) year, count(nominal) data')
+                ->groupBy('year')
+                ->orderBy('year', 'asc')
+                ->get();
+        return view('pages.admin.bukuKas.index', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan]);
     }
 
     /**
@@ -82,5 +91,36 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function bukuKasRekap()
+    {
+        $tahun_awal = DB::table('pemasukan')
+        ->selectRaw('YEAR(tanggal_bayar)')
+        ->orderBy('tanggal_bayar', 'asc')
+        ->get();
+
+        $minprice = DB::table('products')->select('*')->where('category_id','=',$id)->min('price');
+        return view('pages.admin.bukuKas.index');   
+    }
+    public function bukuKasRekapHarian($tahun, $bulan, $hari) 
+    {
+        $user = Auth::user();
+        $tanggal = $tahun."-".$bulan."-".$hari; 
+        $pemasukan = DB::table('pemasukan')
+                        ->whereDate('tanggal_bayar', $tanggal)
+                        ->get();
+        $pengeluaran = DB::table('pengeluaran')
+                        ->whereDate('tanggal_pengeluaran', $tanggal)
+                        ->get();
+        return view('pages.admin.bukuKas.rekapHarian', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan]); 
+    }
+    public function bukuKasRekapBulanan($tahun, $bulan)
+    {
+        return view('pages.admin.bukuKas.rekapBulanan');   
+    }
+    public function bukuKasRekapTahunan()
+    {
+        return view('pages.admin.bukuKas.rekapTahunan');   
     }
 }
