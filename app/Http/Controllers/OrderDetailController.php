@@ -88,8 +88,8 @@ class OrderDetailController extends Controller
 
     public function storeFromCart(Request $request){
         $product_id = $request->get('id'); 
-        $productArr = explode(",", $product_id);
-        dd($productArr);
+
+        dd($product_id);
     }
 
     /**

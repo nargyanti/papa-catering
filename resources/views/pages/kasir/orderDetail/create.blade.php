@@ -127,7 +127,7 @@
         <div class="text-center">
             <form action="{{route('storeFromCart')}}" method="POST" class = "hidden" >
                 @csrf
-                <input type="hidden" id = "sendId" name="id[]">
+                <input type="hidden" class = "sendId" id = "sendId" name="id[]">
                 <button class="btn btn-primary" style="width:45%">Simpan</button>
             </form>
             {{-- <button class="btn btn-outline-primary mr-3" style="width:45%">Batalkan</button>
@@ -202,10 +202,15 @@
 
 
         // Using object
-        let newData = [{id:id, qty:1}];
+        let newData = [[id, 1]];
         items = items.concat(newData)
         console.log(items);
-        $('#sendId').val(items);
+        // let object = JSON.parse(items)
+        // console.log(object)
+        let sendId = document.getElementsByName('name=id[]')
+        sendId.value = items;
+        console.log(" " + sendId.value)
+        // return sendId.value;
 
 
 
