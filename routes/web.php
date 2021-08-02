@@ -9,6 +9,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\PemasukanController;
+use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\PembayaranController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +37,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['admin'])->group(function () {
         Route::resource('admin', AdminController::class);
+        Route::resource('pengeluaran', PengeluaranController::class);
+        Route::resource('pembayaran', PembayaranController::class);
+        Route::get('/pengeluaran/previewPengeluaran/{params}', [PemasukanController::class, 'previewFoto'])->name('previewPengeluaran');
+        Route::get('/bukukas/index',[AdminController::class, 'bukuKasRekap'])->name('bukukas.rekap');
+        Route::get('/bukukas/{tahun}/{bulan}/{hari}',[AdminController::class, 'bukuKasRekapHarian'])->name('bukukas.rekapHarian');
+        Route::get('/bukukas/{tahun}/{bulan}',[AdminController::class, 'bukuKasRekapBulanan'])->name('bukukas.rekapBulanan');
+        Route::get('/bukukas/{tahun}',[AdminController::class, 'bukuKasRekapTahunan'])->name('bukukas.rekapTahunan');
     });
 
     Route::middleware(['kasir'])->group(function () {

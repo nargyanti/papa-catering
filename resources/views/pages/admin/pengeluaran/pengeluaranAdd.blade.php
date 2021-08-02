@@ -21,19 +21,19 @@
 			<div class="card-body">
 				<div class="form-group">
 					<label for="exampleInputEmail1">Tanggal Pengeluaran</label>
-					<input type="date" class="form-control" placeholder="Masukkan tanggal pengeluaran" name="tanggal_pengeluaran">
+					<input type="date" class="form-control" placeholder="Masukkan Tanggal Pengeluaran" name="tanggal_pengeluaran">
 				</div>
 				<div class="form-group">
 					<label for="exampleInputEmail1">Jenis Beban</label>
-					<input type="text" class="form-control" placeholder="Masukkan nominal" name="jenis_beban">
+					<input type="text" class="form-control" placeholder="Masukkan Jenis Beban" name="jenis_beban">
 				</div>
 				<div class="form-group">
 					<label for="exampleInputEmail1">Jenis Pengeluaran</label>
-					<input type="text" class="form-control" placeholder="Masukkan nominal" name="jenis_pengeluaran">
+					<input type="text" class="form-control" placeholder="Masukkan Jenis Pengeluaran" name="jenis_pengeluaran">
 				</div>
 				<div class="form-group">
 					<label for="exampleInputEmail1">Nominal</label>
-					<input type="text" class="form-control" placeholder="Masukkan nominal" name="nominal">
+					<input type="text" class="form-control" placeholder="Masukkan Nominal" name="nominal">
 				</div>
 				<div class="form-group">
 					<label>Metode Transaksi</label>
@@ -47,7 +47,7 @@
 					<input type="file" class="form-control" id="exampleInputPassword1" placeholder="upload foto bukti" name="foto_bukti">
 				</div>
 				<div class="form-group">
-					<label>keterangan</label>
+					<label>Keterangan</label>
 					<textarea class="form-control" rows="3" name="keterangan" placeholder="Masukkan Keterangan"></textarea>
 				</div>
 				<a href="{{route('pengeluaran.index')}}" type="button" class="btn mt-3 btn-outline-primary">Kembali</a>
