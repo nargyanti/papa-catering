@@ -51,7 +51,7 @@
 			@endforeach
 			<tr>
 				<td colspan="4"><b> Grand Total </b></td>
-				<td><b>Rp .{{$nominal}} </b></td>
+				<td><b>Rp. {{$nominal}} </b></td>
 			</tr>
 		</tbody>
 	</table>

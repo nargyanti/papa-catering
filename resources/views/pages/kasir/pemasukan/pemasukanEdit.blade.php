@@ -36,7 +36,7 @@
 				</div>
 				<div class="form-group col-10">
 					<a href="{{ route('order.edit', $pemasukan->order_id) }}" type="button" class="btn mt-3 btn-outline-primary">Kembali</a>
-					<button class="btn btn-primary mt-3">Tambah</button>
+					<button class="btn btn-primary mt-3">Edit</button>
 				</div>
 			</div>
 		</form>

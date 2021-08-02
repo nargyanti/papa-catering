@@ -41,15 +41,28 @@
                         <div class="col-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5><b>{{ $product->nama }}</b></h5>
-                                    <p>Normal: {{ $product->harga_satuan }}<br>
-                                    @continue
-                        @elseif($product->kategori == "Kue Asin" && $product->varian == "Mini")                        
-                                        Mini: {{ $product->harga_satuan }}</p>                                    
-                                    <div class="text-center">
-                                        <button class="btn btn-outline-primary mx-1" style="width:90px;border-radius:10px">Normal</button>
-                                        <button class="btn btn-outline-primary mx-1" style="width:90px;border-radius:10px">Mini</button>
+                                    <h5 class = "mb-3"><b>{{ $product->nama }}</b></h5>
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <h5>Normal: {{ $product->harga_satuan }}</h5><br>
+                                        </div>
+                                        <div class="col-5">
+                                            <button class="btn btn-outline-primary mx-1" style="width:90px;border-radius:10px"
+                                            onClick="AddToCart('{{$product->id}}', '{{$product->nama}}', 'normal', '{{$product->harga_satuan}}' )">Normal</button>
+                                        </div>
                                     </div>
+                                    @continue
+                        @elseif($product->kategori == "Kue Asin" && $product->varian == "Mini") 
+                                
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <h5>Mini: {{ $product->harga_satuan }}</h5>                                    
+                                        </div>
+                                        <div class="col-5">
+                                            <button class="btn btn-outline-primary mx-1" style="width:90px;border-radius:10px" 
+                                            onClick= "AddToCart('{{$product->id}}', '{{$product->nama}}', 'mini', '{{$product->harga_satuan}}')">Mini</button>
+                                        </div>
+                                    </div>                       
                                 </div>
                             </div>
                         </div>
@@ -71,29 +84,9 @@
             </div>
             <div class="card-body">
                 <div>
-                    <h5 class="font-weight-bold">Kue Asin</h5>
-                    <table class="my-3">
-                        <tr>
-                            <td class="pr-2">Lemper Normal</td>
-                            <td class="px-2"><input type="number" name="kuantitas" value="10" style="width:60px" class="form-control text-center"></td>
-                            <td class="px-2">Rp 25000</td>
-                            <td class="pl-2"><a type="button" data-toggle="modal" data-target="#deleteProduct" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
-                        </tr>
-                        <tr>
-                            <td class="pr-2">Kroket Normal</td>
-                            <td class="px-2"><input type="number" name="kuantitas" value="10" style="width:60px" class="form-control text-center"></td>
-                            <td class="px-2">Rp 27000</td>
-                            <td class="pl-2"><a type="button" data-toggle="modal" data-target="#deleteProduct" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
-                        </tr>
+                    <h5 class="font-weight-bold">Pesanan</h5>
+                    <table class="my-3" id= "cobaTabel">
                     </table>
-                </div>
-                <div>
-                    <h5 class="font-weight-bold">Kue Manis</h5>
-                    <p>-</p>
-                </div>
-                <div>
-                    <h5 class="font-weight-bold">Kotak</h5>
-                    <p>-</p>
                 </div>
             </div>
         </div>
@@ -132,8 +125,13 @@
         </div>
 
         <div class="text-center">
-            <button class="btn btn-outline-primary mr-3" style="width:45%">Batalkan</button>
-            <button class="btn btn-primary" style="width:45%">Simpan</button>
+            <form action="{{route('storeFromCart')}}" method="POST" class = "hidden" >
+                @csrf
+                <input type="hidden" class = "sendId" id = "sendId" name="id[]">
+                <button class="btn btn-primary" style="width:45%">Simpan</button>
+            </form>
+            {{-- <button class="btn btn-outline-primary mr-3" style="width:45%">Batalkan</button>
+            <button class="btn btn-primary" style="width:45%">Simpan</button> --}}
         </div>
     </div>
 </div>
@@ -172,4 +170,63 @@
     <button type="submit" class="btn btn-primary">Simpan Pesanan</button>
 </form>
 --}}
+
+<script>
+    var items = []
+    function AddToCart(id, nama, size, price){
+        let parent = document.getElementById('cobaTabel');
+        parent.innerHTML += `
+            <tr>
+                <td class="pr-2">${nama} ${size} </td>
+                <td class="px-2"><input type="number" onclick = 'updateQty(${id})' name="kuantitas" value="10" style="width:60px"
+                        class="form-control text-center"></td>
+                <td class="px-2">Rp. ${price}</td>
+                <td class="pl-2"><a class="btn btn-danger" onclick = 'deleteFromCart(${id})'><i class="fa fa-trash"></i></a></td>
+            </tr>
+        
+        `
+        // Add to hidden form
+        // let sendId = document.getElementById('sendId')
+        // items.push({id:id, qty:1});
+        // console.log(items);
+
+        // let jsonObj = {}
+        // for (let i=0; i < items.length; i++) { 
+        //     if (items[i] !==undefined) {
+        //          jsonObj[i]=items[i] 
+        //     }
+        // }s
+
+        // // console.log(jsonObj);
+        // sendId.value = items;
+
+
+        // Using object
+        let newData = [[id, 1]];
+        items = items.concat(newData)
+        console.log(items);
+        // let object = JSON.parse(items)
+        // console.log(object)
+        let sendId = document.getElementsByName('name=id[]')
+        sendId.value = items;
+        console.log(" " + sendId.value)
+        // return sendId.value;
+
+
+
+
+        // console.log(sendId.value);
+    }
+
+    function deleteFromCart(id){
+        alert(id);
+    }
+
+    function updateQty(id){
+        alert(id);
+
+    }
+
+    
+</script>
 @endsection

@@ -22,7 +22,8 @@ class PemasukanController extends Controller
         $order = Order::find($id);
         $orderDetails = OrderDetail::with('product', 'order')->where('order_id', $id)->get();        
         $pemasukan = Pemasukan::with('order')->where('order_id', $id)->get();
-        return view('pages.kasir.order.edit', ['order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan]);
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');  
+        return view('pages.kasir.order.edit', ['order' => $order, 'orderDetails' => $orderDetails, 'pemasukan' => $pemasukan, 'nominal' => $nominal]);
     }
 
     public function previewFoto($id)
@@ -41,7 +42,7 @@ class PemasukanController extends Controller
     public function createWithId($id){
         $order = Order::where('id', $id)->first();
         $order_id = $id;
-         return view('pages.kasir.pemasukan.pemasukanAdd', compact('order_id', 'order'));
+        return view('pages.kasir.pemasukan.pemasukanAdd', compact('order_id', 'order'));
     }
 
 
@@ -73,16 +74,19 @@ class PemasukanController extends Controller
         $pemasukan->save();
 
         $order = Order::find($pemasukan->order_id);
-        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');              
+        $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');      
+        // // dd($nominal);
+        // $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');              
         if($order->total_harga_pesanan - $nominal <= 0) {
             $order->status_pembayaran = 'Lunas';
             $order->save();
+        
         }
-
         return redirect()->route('backToEditOrder',$request->get('order_id') )
             ->with('success', 'Pembayaran Berhasil Ditambahkan');
 
     }
+
 
  
     public function show($id)
@@ -94,6 +98,7 @@ class PemasukanController extends Controller
     public function edit($id)
     {
         $pemasukan = Pemasukan::where('id', $id)->first();
+        // $nominal = Pemasukan::where('order_id', $order->id)->sum('nominal');  
         return view('pages.kasir.pemasukan.pemasukanEdit', compact('pemasukan'));
     }
 

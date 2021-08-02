@@ -86,6 +86,12 @@ class OrderDetailController extends Controller
             ->with('success', 'Berhasil Menambahkan Pemesanan');
     }
 
+    public function storeFromCart(Request $request){
+        $product_id = $request->get('id'); 
+
+        dd($product_id);
+    }
+
     /**
      * Display the specified resource.
      *
