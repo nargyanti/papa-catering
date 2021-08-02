@@ -55,5 +55,23 @@
             </p>
         </a>
     </li>
+@elseif(Auth::user()->level === 'Supervisor')    
+    <li class="nav-item">
+        <a href="#" class="nav-link text-white">
+        <i class="nav-icon fas fa-circle"></i>
+        <p>
+            Laporan
+            <i class="right fas fa-angle-left"></i>
+        </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('bukukas.rekap') }}" class="nav-link text-white">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Rekap Buku Kas</p>
+                </a>
+            </li>
+        </ul>
+    </li>
 @endif
 </ul>

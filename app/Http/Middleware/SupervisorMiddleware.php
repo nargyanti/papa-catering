@@ -20,6 +20,6 @@ class SupervisorMiddleware
         if (Auth::user()->level == "Supervisor") {
             return $next($request);
         };
-        return redirect('/');
+        return redirect('/index');
     }
 }

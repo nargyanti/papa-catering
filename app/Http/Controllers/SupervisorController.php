@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Pengeluaran;
 use App\Models\Pemasukan;
 
-class AdminController extends Controller
+class SupervisorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,6 @@ class AdminController extends Controller
     public function index()
     {
         $user = Auth::user();
-        // $pemasukan = Pemasukan::get();
         $pengeluaran =  Pengeluaran::selectRaw('year(tanggal_pengeluaran) as tahun_keluar, sum(nominal) as nominal')
         ->groupBy('tahun_keluar')
         ->orderBy('tahun_keluar', 'asc')
@@ -27,7 +26,7 @@ class AdminController extends Controller
                 ->groupBy('tahun_bayar')
                 ->orderBy('tahun_bayar', 'asc')
                 ->get();
-        return view('pages.admin.bukuKas.index', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan]);
+        return view('pages.supervisor.index', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan]);
     }
 
     /**
@@ -99,7 +98,6 @@ class AdminController extends Controller
     public function bukuKasRekap()
     {
         $user = Auth::user();
-        // $pemasukan = Pemasukan::get();
         $pengeluaran =  Pengeluaran::selectRaw('year(tanggal_pengeluaran) as tahun_keluar, sum(nominal) as nominal')
         ->groupBy('tahun_keluar')
         ->orderBy('tahun_keluar', 'asc')
@@ -108,10 +106,10 @@ class AdminController extends Controller
                 ->groupBy('tahun_bayar')
                 ->orderBy('tahun_bayar', 'asc')
                 ->get();
-        return view('pages.admin.bukuKas.index', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan]);
+        return view('pages.supervisor.index', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan]);
     }
 
-    public function bukuKasRekapHarian($tahun, $bulan, $hari) 
+    public function rekapDataHarian($tahun, $bulan, $hari) 
     {
         $user = Auth::user();
         $tanggal = $tahun."-".$bulan."-".$hari; 
@@ -121,20 +119,13 @@ class AdminController extends Controller
         $pengeluaran = DB::table('pengeluaran')
                         ->whereDate('tanggal_pengeluaran', $tanggal)
                         ->get();
-        return view('pages.admin.bukuKas.rekapHarian', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan, 'date'=>$tanggal]); 
+        return view('pages.supervisor.rekapHarian', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan, 'date'=>$tanggal]); 
     }
 
-    public function bukuKasRekapBulanan($tahun, $bulan)
+    public function rekapDataBulanan($tahun, $bulan)
     {
         $date = $bulan."-".$tahun;
         $user = Auth::user();
-        // $dataRekapan = DB::table('pemasukan AS ps')
-        //                 ->crossJoin('pengeluaran AS pl')
-        //                 ->whereMonth('ps.tanggal_bayar', $bulan)
-        //                 ->whereMonth('pl.tanggal_pengeluaran', $bulan)
-        //                 ->whereYear('ps.tanggal_bayar', $tahun)
-        //                 ->whereYear('pl.tanggal_pengeluaran', $tahun)
-        //                 ->get();
         $pengeluaran = DB::table('pengeluaran')
                         ->select('tanggal_pengeluaran', DB::raw('SUM(nominal) as nominal, 
                         DAY(tanggal_pengeluaran) AS hari_keluar, MONTH(tanggal_pengeluaran) AS bulan_keluar, YEAR(tanggal_pengeluaran) as tahun_keluar'))
@@ -151,10 +142,10 @@ class AdminController extends Controller
                         ->groupBy('tanggal_bayar')
                         ->orderBy('tanggal_bayar', 'asc')
                         ->get();
-        return view('pages.admin.bukuKas.rekapBulanan', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan, 'date'=>$date]);
+        return view('pages.supervisor.rekapBulanan', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan, 'date'=>$date]);
     }
 
-    public function bukuKasRekapTahunan($tahun)
+    public function rekapDataTahunan($tahun)
     {
         $user = Auth::user();
         $pengeluaran = DB::table('pengeluaran')
@@ -169,6 +160,6 @@ class AdminController extends Controller
                         ->groupByRaw('MONTH(tanggal_bayar)')
                         ->orderByRaw('MONTH(tanggal_bayar)', 'asc')
                         ->get();
-        return view('pages.admin.bukuKas.rekapTahunan', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan, 'date'=>$tahun]);   
+        return view('pages.supervisor.rekapTahunan', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan, 'date'=>$tahun]);   
     }
 }
