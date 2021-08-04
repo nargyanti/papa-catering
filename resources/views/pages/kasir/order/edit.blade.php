@@ -89,7 +89,7 @@
 <div class="my-5">
     @include('layouts.messageAlert')
     <h2>Daftar Pesanan</h2>
-    <a href="#"><button type="button" class="btn btn-primary mt-2 mb-3" style="width:150px">Edit Pesanan</button></a>
+    <a href="{{ route('orderDetail.edit', $order->id) }}"><button type="button" class="btn btn-primary mt-2 mb-3" style="width:150px">Edit Pesanan</button></a>
     <table class="table table-bordered text-center" style="background-color:white">
         <thead>
             <tr class="bg-primary">
