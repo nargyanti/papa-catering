@@ -63,12 +63,15 @@ class OrderController extends Controller
         $order->status_pembayaran = 'Belum Lunas';
         $order->status_pengiriman = 'Belum Dikirim';
         $order->status_pemesanan = 'Diproses';
-        $order->alamat = $request->get('alamat');
+        $order->alamat = $request->get('alamat');        
                                
         $user = new User;                
         $user->id = $order->kasir_id;                
-        $order->user()->associate($user);        
-        $order->save();          
+        $order->user()->associate($user);   
+        
+        session(['order' => $order]);        
+        // dd(session()->all());    
+        // $order->save();          
         
         $products = DB::table('products')->orderBy('nama', 'asc')->get();      
 

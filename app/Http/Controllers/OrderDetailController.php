@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use DB;
+use Cart;
+use App\Http\Controllers\Session;
 
 class OrderDetailController extends Controller
 {
@@ -17,7 +19,8 @@ class OrderDetailController extends Controller
      */
     public function index()
     {
-        //
+        $products = DB::table('products')->orderBy('nama', 'asc')->get();         
+        return view('pages.kasir.orderDetail.create', ['products' => $products]);
     }
 
     /**
@@ -37,47 +40,62 @@ class OrderDetailController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    // public function store($id, $nama, $kategori, $varian, $harga_satuan) 
+    // {
+    //     Cart::add($id, $nama, $kategori, $varian, $harga_satuan)->associate("Product");
+
+    //     return redirect()->route('kasir.index')
+    //         ->with('success', 'Berhasil Menambahkan Pemesanan');
+    //         session()->flash('success_message', 'item added in Cart');
+    // }
+
     public function store(Request $request)
-    {
-        // Sementara 1 pesanan
-        $request->validate([                        
-            'kuantitas' => 'required',            
+    {     
+        $request->validate([                                    
             'metode_pengiriman' => 'required',                                    
         ]);
-
-        $product = Product::find($request->get('product_id')); // Ini nyari produk yang dibeli
-        $orderDetail = new orderDetail;
-        $orderDetail->order_id = $request->get('order_id');
-        $orderDetail->product_id = $request->get('product_id');                
-        $orderDetail->kuantitas = $request->get('kuantitas');        
-        $orderDetail->harga_total =  $product->harga_satuan * $orderDetail->kuantitas;
-        $orderDetail->keterangan = $request->get('keterangan');    
-
-        $order = new Order;
-        $order->id = $request->get('order_id');
-        $orderDetail->order()->associate($order);        
-        $orderDetail->save();      
+   
+        $cart = json_decode($request->get('cart'), true);        
         
+        $order = session('order');                
+        $order->save();
+        
+        foreach ($cart as $item) {
+            $product = Product::find($item["id"]); // Ini nyari produk yang dibeli
+            $orderDetail = new orderDetail;
+            $orderDetail->order_id = $order->id;
+            $orderDetail->product_id = $item["id"];                
+            $orderDetail->kuantitas = $item["kuantitas"];
+            $orderDetail->harga_total =  $product->harga_satuan * $orderDetail->kuantitas;
+            $orderDetail->keterangan = "-";
+            
+            $orderItem = new Order;
+            $orderItem->id = $order->id;
+            $orderDetail->order()->associate($orderItem);             
+            $orderDetail->save();      
+        }        
+
         // Tambahkan ongkir
         if($request->get('metode_pengiriman') == 'Diantar') {
             $product = Product::where('nama', 'Ongkos Kirim')->first(); // Ini nyari ongkir            
             $orderDetail = new orderDetail;            
-            $orderDetail->order_id = $request->get('order_id');     
+            $orderDetail->order_id = $order->id;    
             $orderDetail->product_id = $product->id;                       
             $orderDetail->kuantitas = 1;  
             $orderDetail->keterangan = '-';  
             $orderDetail->harga_total = $product->harga_satuan * $orderDetail->kuantitas;
             
-            $order = new Order;
-            $order->id = $request->get('order_id');
-            $orderDetail->order()->associate($order);
+            $orderItem = new Order;
+            $orderItem->id = $order->id;
+            $orderDetail->order()->associate($orderItem);
             $orderDetail->save();   
         }
 
         // Menambahkan total harga, metode pengiriman, dan pesan customer        
-        $order = Order::find($request->get('order_id'));
+        $order = Order::find($order->id);
         $order->metode_pengiriman = $request->get('metode_pengiriman');
-        $order->keterangan = $request->get('pesan_customer');                
+        $order->keterangan = $request->get('keterangan');                
         $order->total_harga_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
         $order->save();    
 
@@ -86,11 +104,12 @@ class OrderDetailController extends Controller
             ->with('success', 'Berhasil Menambahkan Pemesanan');
     }
 
-    public function storeFromCart(Request $request){
-        $product_id = $request->get('id'); 
+    // public function storeFromCart(Request $request){        
+    //     $product = $request->get('cart'); 
+    //     $result = json_decode($product, true);
 
-        dd($product_id);
-    }
+    //     dd($result);
+    // }
 
     /**
      * Display the specified resource.
@@ -188,4 +207,13 @@ class OrderDetailController extends Controller
     {
         //
     }
+
+    // public function addToCart($id, $nama, $kategori, $varian, $harga_satuan) 
+    // {
+    //     Cart::add($id, $nama, $kategori, $varian, $harga_satuan)->associate("Product");
+
+    //     return redirect()->route('orderDetail.index')
+    //         ->with('success', 'Berhasil Menambahkan Pemesanan');
+    //         session()->flash('success_message', 'item added in Cart');
+    // }
 }
