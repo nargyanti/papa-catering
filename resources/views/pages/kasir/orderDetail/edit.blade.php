@@ -70,6 +70,8 @@
             </div>
         </div>
         <form action="{{route('orderDetail.update', $order->id)}}" method="POST">
+        @csrf
+				@method('PUT')
         <div class="card">
             <div class="card-body">
                 <h5 class="font-weight-bold">Metode Pengiriman</h5>

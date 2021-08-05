@@ -11,6 +11,7 @@
     Kembali</button></a>
 <div>
     @include('layouts.errorAlert')
+    @include('layouts.messageAlert')
     <form action="{{ route('order.update', $order->id) }}" method="POST">
         @csrf
         @method('PUT')    
@@ -86,8 +87,7 @@
 </div>
 
 {{--- Tabel Pesanan ---}}
-<div class="my-5">
-    @include('layouts.messageAlert')
+<div class="my-5">    
     <h2>Daftar Pesanan</h2>
     <a href="{{ route('orderDetail.edit', $order->id) }}"><button type="button" class="btn btn-primary mt-2 mb-3" style="width:150px">Edit Pesanan</button></a>
     <table class="table table-bordered text-center" style="background-color:white">
@@ -119,8 +119,7 @@
     </table>    
 </div>
 
-<div class="pb-5">
-    @include('layouts.messageAlert')
+<div class="pb-5">    
     <h2>Data Pembayaran</h2>    
     <a href="{{ route('createWithId', $order->id) }}"><button type="button" class="btn btn-primary mt-2 mb-3"><i class="fa fa-plus mr-2"></i>
     Tambah Pembayaran</button></a>

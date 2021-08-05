@@ -115,7 +115,7 @@ class OrderDetailController extends Controller
     public function edit($id)
     {
         $orderDetails = OrderDetail::with('product')->where('order_id', $id)->get();        
-        $order = Order::find($id)->first();
+        $order = Order::find($id);
         $products = DB::table('products')->orderBy('nama', 'asc')->get();               
         return view('pages.kasir.orderDetail.edit', ['orderDetails' => $orderDetails, 'products' => $products, 'order' => $order]);
     }
@@ -130,52 +130,57 @@ class OrderDetailController extends Controller
     public function update(Request $request, $id)
     {        
         
-        $request->validate([                                    
+        $request->validate([      
             'metode_pengiriman' => 'required',                                    
         ]);
    
-        $carts = json_decode($request->get('cart'), true);  
-        $orderDetail = OrderDetail::where('order_id', $id)->get(); 
-     
-        $newItems = set();
-                
-        foreach ($carts as $cart) {
-            $product = Product::find($cart["id"]); // Ini nyari produk yang dibeli            
-            foreach($orderDetail as $item) {                  
-                if($cart["id"] == $item->product_id) {
-                    $newItems.add($item->product_id);                    
-                }
-            }            
+        $items = json_decode($request->get('cart'), true);  
+        $orderDetail = OrderDetail::where('order_id', $id)->get();
+        foreach($orderDetail as $od) {
+            $od->delete();            
+        }
+        
+        foreach ($items as $item) {
+            $product = Product::find($item["id"]); // Ini nyari produk yang dibeli
+            $orderDetail = new OrderDetail;
+            $orderDetail->order_id = $id;
+            $orderDetail->product_id = $item["id"];                
+            $orderDetail->kuantitas = $item["kuantitas"];
+            $orderDetail->harga_total =  $product->harga_satuan * $orderDetail->kuantitas;
+            $orderDetail->keterangan = "-";
+            
+            $order = new Order;
+            $order->id = $id;
+            $orderDetail->order()->associate($order);             
+            $orderDetail->save();      
         }        
-
-        dd($newItems);
 
         // Tambahkan ongkir
         if($request->get('metode_pengiriman') == 'Diantar') {
             $product = Product::where('nama', 'Ongkos Kirim')->first(); // Ini nyari ongkir            
             $orderDetail = new OrderDetail;            
-            $orderDetail->order_id = $order->id;    
+            $orderDetail->order_id = $id;    
             $orderDetail->product_id = $product->id;                       
             $orderDetail->kuantitas = 1;  
             $orderDetail->keterangan = '-';  
             $orderDetail->harga_total = $product->harga_satuan * $orderDetail->kuantitas;
             
-            $orderItem = new Order;
-            $orderItem->id = $order->id;
-            $orderDetail->order()->associate($orderItem);
+            $order = new Order;
+            $order->id = $id;
+            $orderDetail->order()->associate($order);
             $orderDetail->save();   
         }
 
         // Menambahkan total harga, metode pengiriman, dan pesan customer        
-        $order = Order::find($order->id);
+        $order = Order::find($id);
         $order->metode_pengiriman = $request->get('metode_pengiriman');
         $order->keterangan = $request->get('keterangan');                
         $order->total_harga_pesanan = OrderDetail::where('order_id', $order->id)->sum('harga_total');    
         $order->save();    
 
         // redirect after add data
-        return redirect()->route('order.index')
-            ->with('success', 'Berhasil Mengubah Pemesanan');
+        return redirect()->route('order.edit', $id)
+            ->with('success', 'Berhasil Mengupdate Pemesanan');
     }
 
     /**
