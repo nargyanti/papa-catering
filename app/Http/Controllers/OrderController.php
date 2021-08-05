@@ -71,7 +71,7 @@ class OrderController extends Controller
         
         session(['order' => $order]);        
         // dd(session()->all());    
-        // $order->save();          
+        $order->save();          
         
         $products = DB::table('products')->orderBy('nama', 'asc')->get();      
 

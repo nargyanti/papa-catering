@@ -17,11 +17,26 @@ class OrderDetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = DB::table('products')->orderBy('nama', 'asc')->get();         
-        return view('pages.kasir.orderDetail.create', ['products' => $products]);
+
+        $search = $request->get('search');
+        $idOrder =$request->get('order_id');
+        if ($request->get('search')) {
+            $products = DB::table('products')
+                        ->where('nama','like',"%".$search."%")
+                        ->orWhere('varian','like',"%".$search."%")
+                        ->orWhere('harga_satuan','like',"%".$search."%")
+                        ->orWhere('kategori','like',"%".$search."%")
+                        ->orderBy('nama', 'asc')->get();
+             
+        } else {
+            $products = DB::table('products')->orderBy('nama', 'asc')->get();
+        }      
+        $order = DB::table('orders')->where('id', $idOrder)->first();
+        return view('pages.kasir.orderDetail.create', ['order' => $order,'products' => $products]);
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -12,38 +12,44 @@
     <div class="col-8">
         {{-- Search --}}
         <div class="row my-3">
-            <form class="d-flex col-12">
-                <input class="form-control mr-2" type="search" placeholder="Cari Produk" aria-label="Search">
-                <!-- <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button> -->
-                <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+            <form class="d-flex col-12" action="{{route('orderDetail.index')}}" method="GET">
+               @csrf
+                <input class="form-control mr-2" type="search" name = "search" placeholder="Cari Produk" aria-label="Search">
+                <input type="number" name="order_id" value="{{ $order->id }}" hidden>
+                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
             </form>            
-        </div>        
-        
-        {{-- Navigasi --}}
-        <ul class="nav nav-pills my-3 text-center" id="pills-tab" role="tablist">
-            <li class="nav-item col-4">
-                <a class="nav-link active" id="pills-kue-asin-tab" data-toggle="pill" href="#pills-kue-asin" role="tab" aria-controls="pills-kue-asin" aria-selected="true" style="border:1px solid #007BFF;border-radius:30px">Kue Asin</a>
-            </li>
-            <li class="nav-item col-4">
-                <a class="nav-link" id="pills-kue-manis-tab" data-toggle="pill" href="#pills-kue-manis" role="tab" aria-controls="pills-kue-manis" aria-selected="false" style="border:1px solid #007BFF;border-radius:30px">Kue Manis</a>
-            </li>
-            <li class="nav-item col-4">
-                <a class="nav-link" id="pills-kotak-tab" data-toggle="pill" href="#pills-kotak" role="tab" aria-controls="pills-kotak" aria-selected="false" style="border:1px solid #007BFF;border-radius:30px">Kotak</a>
-            </li>
-        </ul>
-        
-        {{-- Content --}}
-        <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-kue-asin" role="tabpanel" aria-labelledby="pills-kue-asin-tab">
-                @include('layouts.productList', ['kategori' => 'Kue Asin'])
+        </div>   
+                
+        <div>
+            <ul class="nav nav-pills my-3 text-center" id="pills-tab" role="tablist">
+                <li class="nav-item col-4">
+                    <a class="nav-link active" id="pills-kue-asin-tab" data-toggle="pill" href="#pills-kue-asin" role="tab" aria-controls="pills-kue-asin" aria-selected="true" style="border:1px solid #007BFF;border-radius:30px">Kue Asin</a>
+                </li>
+                <li class="nav-item col-4">
+                    <a class="nav-link" id="pills-kue-manis-tab" data-toggle="pill" href="#pills-kue-manis" role="tab" aria-controls="pills-kue-manis" aria-selected="false" style="border:1px solid #007BFF;border-radius:30px">Kue Manis</a>
+                </li>
+                <li class="nav-item col-4">
+                    <a class="nav-link" id="pills-kotak-tab" data-toggle="pill" href="#pills-kotak" role="tab" aria-controls="pills-kotak" aria-selected="false" style="border:1px solid #007BFF;border-radius:30px">Kotak</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-kue-asin" role="tabpanel" aria-labelledby="pills-kue-asin-tab">
+                    @include('layouts.productList', ['kategori' => 'Kue Asin'])
+                </div>
+                <div class="tab-pane fade" id="pills-kue-manis" role="tabpanel" aria-labelledby="pills-kue-manis-tab">
+                    @include('layouts.productList', ['kategori' => 'Kue Manis'])
+                </div>
+                <div class="tab-pane fade" id="pills-kotak" role="tabpanel" aria-labelledby="pills-kotak-tab">    
+                    @include('layouts.productList', ['kategori' => 'Kotak'])
+                </div>
+            </div>        
+        </div>
+
+        {{-- <div class="searchOn">
+            <div class="contentSearch" id="pills-kue-manis"  aria-labelledby="pills-kue-manis-tab">
+                @include('layouts.searchList')
             </div>
-            <div class="tab-pane fade" id="pills-kue-manis" role="tabpanel" aria-labelledby="pills-kue-manis-tab">
-                @include('layouts.productList', ['kategori' => 'Kue Manis'])
-            </div>
-            <div class="tab-pane fade" id="pills-kotak" role="tabpanel" aria-labelledby="pills-kotak-tab">    
-                @include('layouts.productList', ['kategori' => 'Kotak'])
-            </div>
-        </div>        
+        </div> --}}
     </div>
 
     {{-- Keranjang --}}
