@@ -76,8 +76,8 @@
             <div class="card-body">
                 <h5 class="font-weight-bold">Metode Pengiriman</h5>
                 <select name="metode_pengiriman" class="form-control">            
-                    <option value="Diantar" selected>Diantar</option>
-                    <option value="Diambil">Diambil</option>            
+                    <option value="Diantar" {{ $order->metode_pengiriman == "Diantar" ? 'selected' : '' }}>Diantar</option>
+                    <option value="Diambil" {{ $order->metode_pengiriman == "Diambil" ? 'selected' : '' }}>Diambil</option>            
                 </select> 
             </div>
         </div>

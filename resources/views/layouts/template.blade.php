@@ -62,12 +62,13 @@
 
         <li class="nav-item dropdown user user-menu mt-2 ml-2">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-labelledby="dropdownMenuProfile">
-            <img src="{{asset('assets')}}/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+            <img src="{{asset('assets')}}/img/profile-user.png" class="user-image" alt="User Image">
+            <!-- <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
             </a>
             <ul class="dropdown-menu">
             <!-- User image -->
-            <li class="user-header">
-                <img src="{{asset('assets')}}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+            <li class="user-header">                
+                <img src="{{asset('assets')}}/img/profile-user-black.png" class="img-circle" alt="User Image">
                 <p>{{ Auth::user()->nama_lengkap }}
                     <small>{{ Auth::user()->level }}</small>
                 </p>
