@@ -27,39 +27,24 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Bulan</th>
-                                <th>Pemasukan</th>
-                                <th>Pengeluaran</th>
+                                <th>Bulan Pemasukan</th>
+                                <th>Bulan Pengeluaran</th>
+                                <th>Nominal Pemasukan</th>
+                                <th>Nominal Pengeluaran</th>
                                 <th>Saldo</th>
                             </tr>
                         </thead>
                         <tbody>
                         @php $saldo = 0; @endphp
-                            @foreach ($pemasukan as $pemasukan)
-                            @php 
-                                $saldo = $saldo + $pemasukan->nominal;
-                            @endphp
+                            @foreach ($rekapData as $rekapData)
                                 <tr>
-                                    <td><a href='{{url("/rekapData/{$date}/{$pemasukan->bulan_bayar}")}}'>{{ $pemasukan->bulan_bayar }}</a></td>
-                                    <td>{{ $pemasukan->nominal }}</td>
-                                    <td>-</td>
+                                    <td><a href='{{url("/rekapData/{$date}/{$rekapData->bulan_masuk}")}}'>{{ $rekapData->bulan_masuk }}</a></td>
+                                    <td><a href='{{url("/rekapData/{$date}/{$rekapData->bulan_keluar}")}}'>{{ $rekapData->bulan_keluar }}</a></td>
+                                    <td>{{ $rekapData->nominal_masuk }}</td>
+                                    <td>{{ $rekapData->nominal_keluar }}</td>
                                     <td>
                                         @php 
-                                            echo $saldo;
-                                        @endphp
-                                    </td>
-                                </tr>
-                            @endforeach
-                            @foreach ($pengeluaran as $pengeluaran)
-                            @php 
-                                $saldo = $saldo - $pengeluaran->nominal;
-                            @endphp
-                                <tr>
-                                    <td><a href='{{url("/rekapData/{$date}/{$pengeluaran->bulan_keluar}")}}'>{{ $pengeluaran->bulan_keluar }}</a></td>
-                                    <td>-</td>
-                                    <td>{{ $pengeluaran->nominal }}</td>
-                                    <td>
-                                        @php 
+                                            $saldo = $saldo + $rekapData->nominal_masuk - $rekapData->nominal_keluar;
                                             echo $saldo;
                                         @endphp
                                     </td>

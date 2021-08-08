@@ -18,16 +18,16 @@ class AdminController extends Controller
     public function index()
     {
         $user = Auth::user();
-        // $pemasukan = Pemasukan::get();
-        $pengeluaran =  Pengeluaran::selectRaw('year(tanggal_pengeluaran) as tahun_keluar, sum(nominal) as nominal')
-        ->groupBy('tahun_keluar')
-        ->orderBy('tahun_keluar', 'asc')
-        ->get();
-        $pemasukan = Pemasukan::selectRaw('year(tanggal_bayar) as tahun_bayar, sum(nominal) as nominal')
-                ->groupBy('tahun_bayar')
-                ->orderBy('tahun_bayar', 'asc')
+        $rekapData = DB::table('rekap_data')
+                ->select(DB::raw('SUM(nominal_pengeluaran) as nominal_keluar, SUM(nominal_pemasukan) as nominal_masuk,
+                YEAR(tanggal_pemasukan) AS tahun_masuk, YEAR(tanggal_pengeluaran) AS tahun_keluar'))
+                ->groupBy('tahun_masuk')
+                ->groupBy('tahun_keluar')
+                ->orderBy('tahun_masuk', 'asc')
+                ->orderBy('tahun_keluar', 'asc')
                 ->get();
-        return view('pages.admin.bukuKas.index', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan]);
+
+        return view('pages.admin.bukuKas.index', ['user' => $user, 'rekapData'=>$rekapData]);
     }
 
     /**
@@ -99,76 +99,69 @@ class AdminController extends Controller
     public function bukuKasRekap()
     {
         $user = Auth::user();
-        // $pemasukan = Pemasukan::get();
-        $pengeluaran =  Pengeluaran::selectRaw('year(tanggal_pengeluaran) as tahun_keluar, sum(nominal) as nominal')
-        ->groupBy('tahun_keluar')
-        ->orderBy('tahun_keluar', 'asc')
-        ->get();
-        $pemasukan = Pemasukan::selectRaw('year(tanggal_bayar) as tahun_bayar, sum(nominal) as nominal')
-                ->groupBy('tahun_bayar')
-                ->orderBy('tahun_bayar', 'asc')
+        $rekapData = DB::table('rekap_data')
+                ->select(DB::raw('SUM(nominal_pengeluaran) as nominal_keluar, SUM(nominal_pemasukan) as nominal_masuk,
+                YEAR(tanggal_pemasukan) AS tahun_masuk, YEAR(tanggal_pengeluaran) AS tahun_keluar'))
+                ->groupBy('tahun_masuk')
+                ->groupBy('tahun_keluar')
+                ->orderBy('tahun_masuk', 'asc')
+                ->orderBy('tahun_keluar', 'asc')
                 ->get();
-        return view('pages.admin.bukuKas.index', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan]);
+
+        return view('pages.admin.bukuKas.index', ['user' => $user, 'rekapData'=>$rekapData]);
+        
     }
 
     public function bukuKasRekapHarian($tahun, $bulan, $hari) 
     {
         $user = Auth::user();
         $tanggal = $tahun."-".$bulan."-".$hari; 
-        $pemasukan = DB::table('pemasukan')
-                        ->whereDate('tanggal_bayar', $tanggal)
-                        ->get();
-        $pengeluaran = DB::table('pengeluaran')
+
+        $rekapData = DB::table('rekap_data')
                         ->whereDate('tanggal_pengeluaran', $tanggal)
+                        ->orWhereDate('tanggal_pemasukan', $tanggal)
                         ->get();
-        return view('pages.admin.bukuKas.rekapHarian', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan, 'date'=>$tanggal]); 
+        return view('pages.admin.bukuKas.rekapHarian', ['user' => $user, 'rekapData'=>$rekapData, 'date'=>$tanggal]); 
     }
 
     public function bukuKasRekapBulanan($tahun, $bulan)
     {
         $date = $bulan."-".$tahun;
         $user = Auth::user();
-        // $dataRekapan = DB::table('pemasukan AS ps')
-        //                 ->crossJoin('pengeluaran AS pl')
-        //                 ->whereMonth('ps.tanggal_bayar', $bulan)
-        //                 ->whereMonth('pl.tanggal_pengeluaran', $bulan)
-        //                 ->whereYear('ps.tanggal_bayar', $tahun)
-        //                 ->whereYear('pl.tanggal_pengeluaran', $tahun)
-        //                 ->get();
-        $pengeluaran = DB::table('pengeluaran')
-                        ->select('tanggal_pengeluaran', DB::raw('SUM(nominal) as nominal, 
+        $rekapData = DB::table('rekap_data')
+                        ->select('tanggal_pemasukan', 'tanggal_pengeluaran', DB::raw('SUM(nominal_pengeluaran) as nominal_keluar, SUM(nominal_pemasukan) as nominal_masuk,
+                        DAY(tanggal_pemasukan) AS hari_masuk, MONTH(tanggal_pemasukan) AS bulan_masuk, YEAR(tanggal_pemasukan) as tahun_masuk,
                         DAY(tanggal_pengeluaran) AS hari_keluar, MONTH(tanggal_pengeluaran) AS bulan_keluar, YEAR(tanggal_pengeluaran) as tahun_keluar'))
-                        ->whereMonth('tanggal_pengeluaran', $bulan)
-                        ->whereYear('tanggal_pengeluaran', $tahun)
+                        ->where(function ($query1) use($bulan, $tahun){
+                            $query1->whereMonth('tanggal_pengeluaran', $bulan)
+                                ->whereYear('tanggal_pengeluaran', $tahun);
+                        })
+                        ->orWhere(function ($query2) use($bulan, $tahun){
+                            $query2->whereMonth('tanggal_pemasukan', $bulan)
+                                ->whereYear('tanggal_pemasukan', $tahun);
+                        })
                         ->groupBy('tanggal_pengeluaran')
-                        ->orderBy('tanggal_pengeluaran', 'asc')
+                        ->groupBy('tanggal_pemasukan')
+                        ->orderByRaw('DAY(tanggal_pemasukan)', 'asc')
+                        ->orderByRaw('DAY(tanggal_pengeluaran)', 'asc')
                         ->get();
-        $pemasukan = DB::table('pemasukan')
-                        ->select('tanggal_bayar', DB::raw('SUM(nominal) as nominal,
-                        DAY(tanggal_bayar) AS hari_bayar, MONTH(tanggal_bayar) AS bulan_bayar, YEAR(tanggal_bayar) as tahun_bayar'))
-                        ->whereMonth('tanggal_bayar', $bulan)
-                        ->whereYear('tanggal_bayar', $tahun)
-                        ->groupBy('tanggal_bayar')
-                        ->orderBy('tanggal_bayar', 'asc')
-                        ->get();
-        return view('pages.admin.bukuKas.rekapBulanan', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan, 'date'=>$date]);
+        return view('pages.admin.bukuKas.rekapBulanan', ['user' => $user, 'rekapData'=>$rekapData, 'date'=>$date]);
     }
 
     public function bukuKasRekapTahunan($tahun)
     {
         $user = Auth::user();
-        $pengeluaran = DB::table('pengeluaran')
-                        ->select(DB::raw('MONTH(tanggal_pengeluaran) AS bulan_keluar, SUM(nominal) as nominal'))
+
+        $rekapData = DB::table('rekap_data')
+                        ->select(DB::raw('SUM(nominal_pengeluaran) as nominal_keluar, SUM(nominal_pemasukan) as nominal_masuk,
+                        MONTH(tanggal_pemasukan) AS bulan_masuk, MONTH(tanggal_pengeluaran) AS bulan_keluar'))
                         ->whereYear('tanggal_pengeluaran', $tahun)
+                        ->orWhereYear('tanggal_pemasukan', $tahun)
                         ->groupByRaw('MONTH(tanggal_pengeluaran)')
+                        ->groupByRaw('MONTH(tanggal_pemasukan)')
+                        ->orderByRaw('MONTH(tanggal_pemasukan)', 'asc')
                         ->orderByRaw('MONTH(tanggal_pengeluaran)', 'asc')
                         ->get();
-        $pemasukan = DB::table('pemasukan')
-                        ->select(DB::raw('MONTH(tanggal_bayar) AS bulan_bayar, SUM(nominal) as nominal'))
-                        ->whereYear('tanggal_bayar', $tahun)
-                        ->groupByRaw('MONTH(tanggal_bayar)')
-                        ->orderByRaw('MONTH(tanggal_bayar)', 'asc')
-                        ->get();
-        return view('pages.admin.bukuKas.rekapTahunan', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan, 'date'=>$tahun]);   
+        return view('pages.admin.bukuKas.rekapTahunan', ['user' => $user, 'rekapData'=>$rekapData, 'date'=>$tahun]);   
     }
 }

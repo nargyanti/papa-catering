@@ -28,41 +28,33 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>ID</th>
-                                <th>Pemasukan</th>
-                                <th>Pengeluaran</th>
+                                <th>ID Pemasukan</th>
+                                <th>ID Pengeluaran</th>
+                                <th>Nominal Pemasukan</th>
+                                <th>Nominal Pengeluaran</th>
                                 <th>Saldo</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @php $no = 1; $saldo = 0; @endphp
-                            @foreach ($pemasukan as $pemasukan)
+                        @php $no = 1; $saldo = 0; @endphp
+                        @foreach ($rekapData as $rekapData)
                                 <tr>
                                     <td>{{ $no++ }}</td>
-                                    <td>{{ $pemasukan->id }}</td>
-                                    <td>{{ $pemasukan->nominal }}</td>
-                                    <td> - </td>
+                                    <td>{{ $rekapData->id_pemasukan }}</td>
+                                    <td>{{ $rekapData->id_pengeluaran }}</td>
+                                    <td>{{ $rekapData->nominal_pemasukan }}</td>
+                                    <td>{{ $rekapData->nominal_pengeluaran }}</td>
                                     <td>
                                         @php 
-                                            $saldo = $saldo + $pemasukan->nominal;
+                                            if($rekapData->nominal_pemasukan == 0){
+                                                $saldo = $saldo - $rekapData->nominal_pengeluaran;
+                                            } else if($rekapData->nominal_pengeluaran == 0){
+                                                $saldo = $saldo + $rekapData->nominal_pemasukan;
+                                            }
                                             echo $saldo;
                                         @endphp
                                     </td>
-                            @endforeach  
-                            @foreach ($pengeluaran as $pengeluaran)
-                                <tr>
-                                    <td>{{ $no++ }}</td>
-                                    <td>{{ $pengeluaran->id }}</td>
-                                    <td> - </td>
-                                    <td>{{ $pengeluaran->nominal }}</td>
-                                    <td>
-                                        @php 
-                                            $saldo = $saldo - $pengeluaran->nominal;
-                                            echo $saldo;
-                                        @endphp
-                                    </td>
-                            @endforeach        
-                             
+                        @endforeach  
                         </tbody>
                     </table>
                 </div>

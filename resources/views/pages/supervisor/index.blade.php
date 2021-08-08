@@ -27,44 +27,31 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Tahun</th>
-                                <th>Pemasukan</th>
-                                <th>Pengeluaran</th>
+                                <th>Tahun Pemasukan</th>
+                                <th>Tahun Pengeluaran</th>
+                                <th>Nominal Pemasukan</th>
+                                <th>Nominal Pengeluaran</th>
                                 <th>Saldo</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php
-                                $no = 0;
                                 $saldo = 0;
                             @endphp
-                            @foreach ($pemasukan as $pemasukan)
+                            @foreach ($rekapData as $rekapData)
                                 <tr>
-                                    <td><a href="{{ route('rekapData.rekapTahunan', $pemasukan->tahun_bayar)}}">{{ $pemasukan->tahun_bayar }}</a></td>
-                                    <td>{{ $pemasukan->nominal }}</td>
-                                    <td>-</td>
+                                    <td><a href='{{url("/rekapData/{$rekapData->tahun_masuk}")}}'>{{ $rekapData->tahun_masuk }}</a></td>
+                                    <td><a href='{{url("/rekapData/{$rekapData->tahun_keluar}")}}'>{{ $rekapData->tahun_keluar }}</a></td>
+                                    <td>{{ $rekapData->nominal_masuk }}</td>
+                                    <td>{{ $rekapData->nominal_keluar }}</td>
                                     <td>
                                         @php 
-                                            $saldo = $saldo + $pemasukan->nominal;
+                                            $saldo = $saldo + $rekapData->nominal_masuk - $rekapData->nominal_keluar;
                                             echo $saldo;
                                         @endphp
                                     </td>
                                 </tr>
                             @endforeach
-                            @foreach ($pengeluaran as $pengeluaran)
-                                <tr>
-                                    <td><a href="{{ route('rekapData.rekapTahunan', $pengeluaran->tahun_keluar )}}">{{ $pengeluaran->tahun_keluar }}</a></td>
-                                    <td>-</td>
-                                    <td>{{ $pengeluaran->nominal }}</td>
-                                    <td>
-                                        @php 
-                                            $saldo = $saldo - $pengeluaran->nominal;
-                                            echo $saldo;
-                                        @endphp
-                                    </td>
-                                </tr>
-                            @endforeach
-                            
                         </tbody>
                     </table>
                 </div>
