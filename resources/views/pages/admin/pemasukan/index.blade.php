@@ -48,7 +48,7 @@
 							<td>{{$pemasukan->no_nota}}</td>
 							<td>{{$pemasukan->order_id}}</td>
 							<td>{{$pemasukan->tanggal_bayar}}</td>
-							<td>{{$pemasukan->nominal}}</td>
+							<td>Rp {{number_format($pemasukan->nominal,0,',','.')}}</td>
 							<td>{{$pemasukan->metode_transaksi}}</td>
 							<td>
 								@if($pemasukan->metode_transaksi === 'Cash')

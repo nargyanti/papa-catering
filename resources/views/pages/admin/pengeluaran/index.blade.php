@@ -70,7 +70,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td>{{ $pengeluaran->nominal }}</td>
+                                    <td> Rp {{number_format($pengeluaran->nominal,0,',','.')}}</td>
                                     <td>{{ $pengeluaran->keterangan }}</td>
                                     <td>
                                         <a type="button" href="{{ route('pengeluaran.edit', $pengeluaran->id) }}"

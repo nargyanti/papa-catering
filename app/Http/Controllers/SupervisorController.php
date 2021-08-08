@@ -153,7 +153,7 @@ class SupervisorController extends Controller
         $user = Auth::user();
 
         $rekapData = DB::table('rekap_data')
-                        ->select('tanggal_pemasukan', 'tanggal_pengeluaran', DB::raw('SUM(nominal_pengeluaran) as nominal_keluar, SUM(nominal_pemasukan) as nominal_masuk,
+                        ->select(DB::raw('SUM(nominal_pengeluaran) as nominal_keluar, SUM(nominal_pemasukan) as nominal_masuk,
                         MONTH(tanggal_pemasukan) AS bulan_masuk, MONTH(tanggal_pengeluaran) AS bulan_keluar'))
                         ->whereYear('tanggal_pengeluaran', $tahun)
                         ->orWhereYear('tanggal_pemasukan', $tahun)
