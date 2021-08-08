@@ -38,22 +38,18 @@
                         <tbody>
                         @php $no = 1; $saldo = 0; @endphp
                         @foreach ($rekapData as $rekapData)
-                                <tr>
-                                    <td>{{ $no++ }}</td>
-                                    <td>{{ $rekapData->id_pemasukan }}</td>
-                                    <td>{{ $rekapData->id_pengeluaran }}</td>
-                                    <td>{{ $rekapData->nominal_pemasukan }}</td>
-                                    <td>{{ $rekapData->nominal_pengeluaran }}</td>
-                                    <td>
-                                        @php 
-                                            if($rekapData->nominal_pemasukan == 0){
-                                                $saldo = $saldo - $rekapData->nominal_pengeluaran;
-                                            } else if($rekapData->nominal_pengeluaran == 0){
-                                                $saldo = $saldo + $rekapData->nominal_pemasukan;
-                                            }
-                                            echo $saldo;
-                                        @endphp
-                                    </td>
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $rekapData->id_pemasukan }}</td>
+                                <td>{{ $rekapData->id_pengeluaran }}</td>
+                                <td>Rp {{number_format($rekapData->nominal_pemasukan,0,',','.')}}</td>
+                                <td>Rp {{number_format($rekapData->nominal_pengeluaran,0,',','.')}}</td>
+                                <td>
+                                    @php 
+                                        $saldo = $saldo + $rekapData->nominal_pemasukan - $rekapData->nominal_pengeluaran;
+                                        echo ('Rp '.number_format($saldo,0,',','.'));
+                                    @endphp
+                                </td>
                         @endforeach  
                         </tbody>
                     </table>

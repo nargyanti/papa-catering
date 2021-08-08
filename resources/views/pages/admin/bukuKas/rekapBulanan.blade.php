@@ -40,12 +40,12 @@
                                 <tr>
                                     <td><a href='{{url("/bukukas/{$rekapData->tahun_masuk}/{$rekapData->bulan_masuk}/{$rekapData->hari_masuk}")}}'>{{ $rekapData->tanggal_pemasukan }}</a></td>
                                     <td><a href='{{url("/bukukas/{$rekapData->tahun_keluar}/{$rekapData->bulan_keluar}/{$rekapData->hari_keluar}")}}'>{{ $rekapData->tanggal_pengeluaran }}</a></td>
-                                    <td>{{ $rekapData->nominal_masuk }}</td>
-                                    <td>{{ $rekapData->nominal_keluar }}</td>
+                                    <td>Rp {{number_format($rekapData->nominal_masuk,0,',','.')}}</td>
+                                    <td>Rp {{number_format($rekapData->nominal_keluar,0,',','.')}}</td>
                                     <td>
                                         @php 
                                             $saldo = $saldo + $rekapData->nominal_masuk - $rekapData->nominal_keluar;
-                                            echo $saldo;
+                                            echo ('Rp '.number_format($saldo,0,',','.'));
                                         @endphp
                                     </td>
                                 </tr>
