@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Pengeluaran;
 use App\Models\Pemasukan;
 
-class AdminController extends Controller
+class SupervisorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,6 +18,7 @@ class AdminController extends Controller
     public function index()
     {
         $user = Auth::user();
+        
         $rekapData = DB::table('rekap_data')
                 ->select(DB::raw('SUM(nominal_pengeluaran) as nominal_keluar, SUM(nominal_pemasukan) as nominal_masuk,
                 YEAR(tanggal_pemasukan) AS tahun_masuk, YEAR(tanggal_pengeluaran) AS tahun_keluar'))
@@ -27,7 +28,7 @@ class AdminController extends Controller
                 ->orderBy('tahun_keluar', 'asc')
                 ->get();
 
-        return view('pages.admin.bukuKas.index', ['user' => $user, 'rekapData'=>$rekapData]);
+        return view('pages.supervisor.index', ['user' => $user, 'rekapData'=>$rekapData]);
     }
 
     /**
@@ -99,20 +100,18 @@ class AdminController extends Controller
     public function bukuKasRekap()
     {
         $user = Auth::user();
-        $rekapData = DB::table('rekap_data')
-                ->select(DB::raw('SUM(nominal_pengeluaran) as nominal_keluar, SUM(nominal_pemasukan) as nominal_masuk,
-                YEAR(tanggal_pemasukan) AS tahun_masuk, YEAR(tanggal_pengeluaran) AS tahun_keluar'))
-                ->groupBy('tahun_masuk')
-                ->groupBy('tahun_keluar')
-                ->orderBy('tahun_masuk', 'asc')
-                ->orderBy('tahun_keluar', 'asc')
+        $pengeluaran =  Pengeluaran::selectRaw('year(tanggal_pengeluaran) as tahun_keluar, sum(nominal) as nominal')
+        ->groupBy('tahun_keluar')
+        ->orderBy('tahun_keluar', 'asc')
+        ->get();
+        $pemasukan = Pemasukan::selectRaw('year(tanggal_bayar) as tahun_bayar, sum(nominal) as nominal')
+                ->groupBy('tahun_bayar')
+                ->orderBy('tahun_bayar', 'asc')
                 ->get();
-
-        return view('pages.admin.bukuKas.index', ['user' => $user, 'rekapData'=>$rekapData]);
-        
+        return view('pages.supervisor.index', ['user' => $user, 'pengeluaran'=>$pengeluaran, 'pemasukan'=>$pemasukan]);
     }
 
-    public function bukuKasRekapHarian($tahun, $bulan, $hari) 
+    public function rekapDataHarian($tahun, $bulan, $hari) 
     {
         $user = Auth::user();
         $tanggal = $tahun."-".$bulan."-".$hari; 
@@ -121,12 +120,13 @@ class AdminController extends Controller
                         ->whereDate('tanggal_pengeluaran', $tanggal)
                         ->orWhereDate('tanggal_pemasukan', $tanggal)
                         ->get();
-        return view('pages.admin.bukuKas.rekapHarian', ['user' => $user, 'rekapData'=>$rekapData, 'date'=>$tanggal]); 
+        return view('pages.supervisor.rekapHarian', ['user' => $user, 'rekapData'=>$rekapData, 'date'=>$tanggal]); 
     }
 
-    public function bukuKasRekapBulanan($tahun, $bulan)
+    public function rekapDataBulanan($tahun, $bulan)
     {
         $date = $bulan."-".$tahun;
+        
         $user = Auth::user();
         $rekapData = DB::table('rekap_data')
                         ->select('tanggal_pemasukan', 'tanggal_pengeluaran', DB::raw('SUM(nominal_pengeluaran) as nominal_keluar, SUM(nominal_pemasukan) as nominal_masuk,
@@ -145,10 +145,10 @@ class AdminController extends Controller
                         ->orderByRaw('DAY(tanggal_pemasukan)', 'asc')
                         ->orderByRaw('DAY(tanggal_pengeluaran)', 'asc')
                         ->get();
-        return view('pages.admin.bukuKas.rekapBulanan', ['user' => $user, 'rekapData'=>$rekapData, 'date'=>$date]);
+        return view('pages.supervisor.rekapBulanan', ['user' => $user, 'rekapData'=>$rekapData, 'date'=>$date]);
     }
 
-    public function bukuKasRekapTahunan($tahun)
+    public function rekapDataTahunan($tahun)
     {
         $user = Auth::user();
 
@@ -162,6 +162,6 @@ class AdminController extends Controller
                         ->orderByRaw('MONTH(tanggal_pemasukan)', 'asc')
                         ->orderByRaw('MONTH(tanggal_pengeluaran)', 'asc')
                         ->get();
-        return view('pages.admin.bukuKas.rekapTahunan', ['user' => $user, 'rekapData'=>$rekapData, 'date'=>$tahun]);   
+        return view('pages.supervisor.rekapTahunan', ['user' => $user, 'rekapData'=>$rekapData, 'date'=>$tahun]);   
     }
 }

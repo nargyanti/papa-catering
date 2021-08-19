@@ -11,6 +11,7 @@ use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\PemasukanController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\SupervisorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -39,11 +40,19 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('admin', AdminController::class);
         Route::resource('pengeluaran', PengeluaranController::class);
         Route::resource('pembayaran', PembayaranController::class);
-        Route::get('/pengeluaran/previewPengeluaran/{params}', [PemasukanController::class, 'previewFoto'])->name('previewPengeluaran');
+        Route::get('/pengeluaran/previewPengeluaran/{params}', [PengeluaranController::class, 'previewPengeluaran'])->name('previewPengeluaran');
         Route::get('/bukukas/index',[AdminController::class, 'bukuKasRekap'])->name('bukukas.rekap');
         Route::get('/bukukas/{tahun}/{bulan}/{hari}',[AdminController::class, 'bukuKasRekapHarian'])->name('bukukas.rekapHarian');
         Route::get('/bukukas/{tahun}/{bulan}',[AdminController::class, 'bukuKasRekapBulanan'])->name('bukukas.rekapBulanan');
         Route::get('/bukukas/{tahun}',[AdminController::class, 'bukuKasRekapTahunan'])->name('bukukas.rekapTahunan');
+    });
+
+    Route::middleware(['supervisor'])->group(function () {
+        Route::resource('supervisor', SupervisorController::class);
+        Route::get('/rekapData/index', [SupervisorController::class, 'bukuKasRekap'])->name('rekapData.all');
+        Route::get('/rekapData/{tahun}/{bulan}/{hari}',[SupervisorController::class, 'rekapDataHarian'])->name('rekapData.rekapHarian');
+        Route::get('/rekapData/{tahun}/{bulan}',[SupervisorController::class, 'rekapDataBulanan'])->name('rekapData.rekapBulanan');
+        Route::get('/rekapData/{tahun}',[SupervisorController::class, 'rekapDataTahunan'])->name('rekapData.rekapTahunan');
     });
 
     Route::middleware(['kasir'])->group(function () {

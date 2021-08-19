@@ -28,41 +28,29 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>ID</th>
-                                <th>Pemasukan</th>
-                                <th>Pengeluaran</th>
+                                <th>ID Pemasukan</th>
+                                <th>ID Pengeluaran</th>
+                                <th>Nominal Pemasukan</th>
+                                <th>Nominal Pengeluaran</th>
                                 <th>Saldo</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @php $no = 1; $saldo = 0; @endphp
-                            @foreach ($pemasukan as $pemasukan)
-                                <tr>
-                                    <td>{{ $no++ }}</td>
-                                    <td>{{ $pemasukan->id }}</td>
-                                    <td>{{ $pemasukan->nominal }}</td>
-                                    <td> - </td>
-                                    <td>
-                                        @php 
-                                            $saldo = $saldo + $pemasukan->nominal;
-                                            echo $saldo;
-                                        @endphp
-                                    </td>
-                            @endforeach  
-                            @foreach ($pengeluaran as $pengeluaran)
-                                <tr>
-                                    <td>{{ $no++ }}</td>
-                                    <td>{{ $pengeluaran->id }}</td>
-                                    <td> - </td>
-                                    <td>{{ $pengeluaran->nominal }}</td>
-                                    <td>
-                                        @php 
-                                            $saldo = $saldo - $pengeluaran->nominal;
-                                            echo $saldo;
-                                        @endphp
-                                    </td>
-                            @endforeach        
-                             
+                        @php $no = 1; $saldo = 0; @endphp
+                        @foreach ($rekapData as $rekapData)
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $rekapData->id_pemasukan }}</td>
+                                <td>{{ $rekapData->id_pengeluaran }}</td>
+                                <td>Rp {{number_format($rekapData->nominal_pemasukan,0,',','.')}}</td>
+                                <td>Rp {{number_format($rekapData->nominal_pengeluaran,0,',','.')}}</td>
+                                <td>
+                                    @php 
+                                        $saldo = $saldo + $rekapData->nominal_pemasukan - $rekapData->nominal_pengeluaran;
+                                        echo ('Rp '.number_format($saldo,0,',','.'));
+                                    @endphp
+                                </td>
+                        @endforeach  
                         </tbody>
                     </table>
                 </div>

@@ -9,7 +9,7 @@
 @section('content')
 {{-- header --}}
     <div class="mt-2 mb-4">
-        {{-- <h4>Tabel Rekapitulasi Data</h4> --}}
+        {{-- <h4>Tabel Rekap Harian</h4> --}}
        
         <hr class="hr">
     </div>
@@ -20,38 +20,38 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Rekap Semua Data</h2>
+                    <h2 class="card-title">Tanggal @php echo($date); @endphp </h2>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Tahun Pemasukan</th>
-                                <th>Tahun Pengeluaran</th>
+                                <th>No</th>
+                                <th>ID Pemasukan</th>
+                                <th>ID Pengeluaran</th>
                                 <th>Nominal Pemasukan</th>
                                 <th>Nominal Pengeluaran</th>
                                 <th>Saldo</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $saldo = 0;
-                            @endphp
+                            @php $no = 1; $saldo = 0; @endphp
                             @foreach ($rekapData as $rekapData)
                                 <tr>
-                                    <td><a href='{{url("/bukukas/{$rekapData->tahun_masuk}")}}'>{{ $rekapData->tahun_masuk }}</a></td>
-                                    <td><a href='{{url("/bukukas/{$rekapData->tahun_keluar}")}}'>{{ $rekapData->tahun_keluar }}</a></td>
-                                    <td>Rp {{number_format($rekapData->nominal_masuk,0,',','.')}}</td>
-                                    <td>Rp {{number_format($rekapData->nominal_keluar,0,',','.')}}</td>
+                                    <td>{{ $no++ }}</td>
+                                    <td>{{ $rekapData->id_pemasukan }}</td>
+                                    <td>{{ $rekapData->id_pengeluaran }}</td>
+                                    <td>Rp {{number_format($rekapData->nominal_pemasukan,0,',','.')}}</td>
+                                    <td>Rp {{number_format($rekapData->nominal_pengeluaran,0,',','.')}}</td>
                                     <td>
                                         @php 
-                                            $saldo = $saldo + $rekapData->nominal_masuk - $rekapData->nominal_keluar;
+                                            $saldo = $saldo + $rekapData->nominal_pemasukan - $rekapData->nominal_pengeluaran;
                                             echo ('Rp '.number_format($saldo,0,',','.'));
                                         @endphp
                                     </td>
-                                </tr>
-                            @endforeach
+                            @endforeach  
+                                
                         </tbody>
                     </table>
                 </div>
@@ -60,5 +60,4 @@
             <!-- /.card -->
         </div>
     </div>
-
 @endsection

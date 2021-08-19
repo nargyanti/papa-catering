@@ -40,8 +40,8 @@
                             @endphp
                             @foreach ($rekapData as $rekapData)
                                 <tr>
-                                    <td><a href='{{url("/bukukas/{$rekapData->tahun_masuk}")}}'>{{ $rekapData->tahun_masuk }}</a></td>
-                                    <td><a href='{{url("/bukukas/{$rekapData->tahun_keluar}")}}'>{{ $rekapData->tahun_keluar }}</a></td>
+                                    <td><a href='{{url("/rekapData/{$rekapData->tahun_masuk}")}}'>{{ $rekapData->tahun_masuk }}</a></td>
+                                    <td><a href='{{url("/rekapData/{$rekapData->tahun_keluar}")}}'>{{ $rekapData->tahun_keluar }}</a></td>
                                     <td>Rp {{number_format($rekapData->nominal_masuk,0,',','.')}}</td>
                                     <td>Rp {{number_format($rekapData->nominal_keluar,0,',','.')}}</td>
                                     <td>

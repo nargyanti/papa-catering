@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'nama_lengkap' => 'Admin Papa',
             'username' => 'admin',
-            'no_telepon' => '085607287537',
+            'no_telepon' => '085607287517',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
             'level' => 'Admin',
@@ -44,6 +44,16 @@ class UserSeeder extends Seeder
             'email' => 'developer@gmail.com',
             'password' => Hash::make('12345678'),
             'level' => 'Developer',
+            'created_at' => Carbon::now('GMT+7'),
+            'email_verified_at' => Carbon::now('GMT+7'),
+        ]);
+        DB::table('users')->insert([
+            'nama_lengkap' => 'Supervisor Papa',
+            'username' => 'supervisor',
+            'no_telepon' => '082257229913',
+            'email' => 'supervisor@gmail.com',
+            'password' => Hash::make('12345678'),
+            'level' => 'Supervisor',
             'created_at' => Carbon::now('GMT+7'),
             'email_verified_at' => Carbon::now('GMT+7'),
         ]);
