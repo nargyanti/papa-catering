@@ -41,4 +41,7 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetail::class);
     }
+    public function setCurrency($uang){
+        return number_format($angka,0, ',' , '.'); 
+    }
 }

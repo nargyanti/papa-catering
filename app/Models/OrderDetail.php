@@ -25,4 +25,8 @@ class OrderDetail extends Model
     public function order() {
         return $this->belongsTo(Order::class);
     }
+
+    public function setCurrency($uang){
+        return number_format($angka,0, ',' , '.'); 
+    }
 }

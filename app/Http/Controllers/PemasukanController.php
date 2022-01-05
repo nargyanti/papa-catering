@@ -204,7 +204,7 @@ class PemasukanController extends Controller
     public function cetakNotaPembayaran($id){
       $pemasukan = Pemasukan::where('id', $id)->first(); 
       $order_id = Pemasukan::where('id', $id)->value('order_id');
-      $order = Order::where('id', $id)->first();
+      $order = Order::where('id', $order_id)->first();
       $filename = 'PembayaranID' . "-" . $id; 
       $customPaper = array(0,0,400, 400);
       $nota = PDF::loadview('pages.kasir.pemasukan.notaPembayaran', compact('pemasukan', 'order'))->setPaper($customPaper, 'potrait');

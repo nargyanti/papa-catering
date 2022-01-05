@@ -46,13 +46,13 @@
 				<td>{{$od->kuantitas}}</td>
 				<td>{{$od->product->harga_satuan}}</td>
 				<td style="padding-right: 30px">
-					<p style="text-align: right">{{$od->harga_total}}</p>
+					<p style="text-align: right">Rp {{number_format($od->harga_total,0, ',' , '.');}}</p>
 				</td>
 			</tr>
 			@endforeach
 			<tr>
 				<td colspan="4"><b> Grand Total </b></td>
-				<td><b> {{$nominal}} </b></td>
+				<td><b>Rp {{number_format($nominal,0, ',' , '.');}} </b></td>
 			</tr>
 		</tbody>
 	</table>
@@ -75,21 +75,21 @@
 				<td>{{$p->tanggal_bayar}}</td>
 				<td>{{$p->metode_transaksi}}</td>
 				<td style="padding-right: 30px">
-					<p style="text-align: right">Rp. {{$p->nominal}}</p>
+					<p style="text-align: right">Rp {{number_format($p->nominal,0, ',' , '.');}}</p>
 				</td>
 			</tr>
 			@endforeach
 			<tr>
 				<td colspan="3"><b> Grand Total </b></td>
-				<td><b>Rp. {{$nominalPemasukan}} </b></td>
+				<td><b>Rp {{number_format($nominalPemasukan ,0, ',' , '.');}} </b></td>
 			</tr>
 			<tr>
 				@if($nominalPemasukan > $nominal)
 					<td colspan="3"><b> Kembalian </b></td>
-					<td><b>Rp. {{$kembalian}} </b></td>
+					<td><b>Rp {{number_format($kembalian ,0, ',' , '.');}} </b></td>
 				@else
 					<td colspan="3"><b> Kurang </b></td>
-					<td><b>Rp. {{$kurang}} </b></td>
+					<td><b>Rp {{number_format($kurang ,0, ',' , '.');}} </b></td>
 				@endif
 			</tr>
 		</tbody>

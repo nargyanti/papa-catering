@@ -36,12 +36,12 @@
 			<tbody>
 				@php $no = 1 @endphp
 				@foreach($products as $product)
-				<tr>
+				<tr>s
 					<td>{{$no++}}</td>
 					<td>{{$product->nama}}</td>
 					<td>{{$product->kategori}}</td>
 					<td>{{$product->varian}}</td>
-					<td>{{$product->harga_satuan}}</td>														
+					<td>Rp {{number_format($product->harga_satuan,0, ',' , '.');}}</td>														
 					<td>
 						<a type="button" href="{{ route('product.edit', $product->id) }}" class="btn btn-warning"><i class="fa fa-edit" style="color: white"></i></a>
 						<a type="button" data-toggle="modal" data-target="#deleteProduct" class="btn btn-danger"><i class="fa fa-trash"></i></a>

@@ -45,13 +45,13 @@
 				<td>{{$no++}}</td>
 				<td>{{$od->product->nama}}</td>
 				<td>{{$od->kuantitas}}</td>
-				<td>Rp. {{$od->product->harga_satuan}}</td>
-				<td style="padding-right: 30px"><p style="text-align: right">Rp. {{$od->harga_total}}</p></td>
+				<td>Rp {{number_format($od->product->harga_satuan,0, ',' , '.');}}</td>
+				<td style="padding-right: 30px"><p style="text-align: right">Rp {{number_format($od->harga_total,0, ',' , '.');}}</p></td>
 			</tr>
 			@endforeach
 			<tr>
 				<td colspan="4"><b> Grand Total </b></td>
-				<td><b>Rp. {{$nominal}} </b></td>
+				<td><b>Rp {{number_format($nominal,0, ',' , '.');}} </b></td>
 			</tr>
 		</tbody>
 	</table>

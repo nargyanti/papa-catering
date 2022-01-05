@@ -42,12 +42,12 @@
 				<td>{{$pemasukan->no_nota}}</td>
 				<td>{{$pemasukan->tanggal_bayar}}</td>
 				<td>{{$pemasukan->metode_transaksi}}</td>
-				<td >Rp. {{$pemasukan->nominal}}</p>
+				<td >Rp {{number_format($pemasukan->nominal,0, ',' , '.');}}</p>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="3"><b> Grand Total </b></td>
-				<td><b>Rp. {{$pemasukan->nominal}} </b></td>
+				<td><b>Rp {{number_format($pemasukan->nominal,0, ',' , '.');}} </b></td>
 			</tr>
 		</tbody>
 	</table>

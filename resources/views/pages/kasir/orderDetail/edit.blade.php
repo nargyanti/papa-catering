@@ -93,7 +93,7 @@
             <div class="card-body">
                 <h5 class="font-weight-bold">Total Harga Pesanan:</h5>
                 <p style="font-size:50px" class="text-center" id="harga_total_pesanan">
-					{{$order->harga_total}}
+					Rp. {{number_format($order->harga_total,0, ',' , '.');}}
                 </p>
             </div>
         </div>
@@ -114,7 +114,7 @@
 <script>
 	let items = []    	
 	@foreach ($orderDetails as $item)
-		addItemToCart('{{ $item->product_id }}', '{{ $item->kuantitas }}', '{{ $item->product->harga_satuan }}')
+		addItemToCart('{{ $item->product_id }}', '{{ $item->kuantitas }}', '{{ number_format($item->product->harga_satuan,0, ',' , '.'); }}')
 	@endforeach	
     function cart(id, nama, varian, harga_satuan){                
         const found = isItemExist(id)               

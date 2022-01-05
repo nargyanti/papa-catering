@@ -77,12 +77,12 @@
 				<td>{{$orderDetail->product->nama . ' ' . $orderDetail->product->varian}}</td>
 				<td>{{$orderDetail->kuantitas}}</td>
 				<td>{{$orderDetail->keterangan}}</td>
-				<td>{{$orderDetail->product->harga_satuan}}</td>
+				<td>Rp {{number_format($orderDetail->harga_total,0, ',' , '.');}}</td>
 			</tr>
 			@endforeach
 			<tr class="font-weight-bold">
 				<td colspan=4>Total</td>
-				<td>{{ $order->total_harga_pesanan }}</td>
+				<td>Rp {{ number_format($order->total_harga_pesanan,0, ',' , '.'); }}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -115,11 +115,11 @@
 				<td>{{$no++}}</td>
 				<td>{{$pemasukan->no_nota}}</td>
 				<td>{{$pemasukan->tanggal_bayar}}</td>
-				<td>{{$pemasukan->nominal}}</td>
+				<td>Rp {{number_format($pemasukan->nominal,0, ',' , '.');}}</td>
 				<td>{{$pemasukan->metode_transaksi}}</td>
 				<td>
 					@if($pemasukan->metode_transaksi === 'Cash')
-					<p>-</p>
+					<p>Dibayar Cash</p>
 					@else
 					@if($pemasukan->foto_bukti == null)
 					<p>Foto bukti belum diunggah</p>
@@ -133,7 +133,7 @@
 			@endforeach
 			<tr class="font-weight-bold">
 				<td colspan=6>Total</td>
-				<td>{{ $nominal }}</td>
+				<td>Rp {{ number_format($nominal,0, ',' , '.'); }}</td>
 			</tr>
 		</tbody>
 	</table>
